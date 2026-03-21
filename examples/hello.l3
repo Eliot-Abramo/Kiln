@@ -1,0 +1,19 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; "Hello, world" in L₃, the hard way (no syntactic sugar or library
+;; functions).
+
+(@byte-write 72)                        ;H
+(@byte-write 101)                       ;e
+(@byte-write 108)                       ;l
+(@byte-write 108)                       ;l
+(@byte-write 111)                       ;o
+(@byte-write 44)                        ;,
+(@byte-write 32)                        ;  (space)
+(@byte-write 119)                       ;w
+(@byte-write 111)                       ;o
+(@byte-write 114)                       ;r
+(@byte-write 108)                       ;l
+(@byte-write 100)                       ;d
+(@byte-write 33)                        ;!
+(@byte-write 10)                        ;  (newline)

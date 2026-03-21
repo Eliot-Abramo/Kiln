@@ -1,0 +1,148 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; (Mutable) vectors
+
+(def vector-make@1
+     (fun (n)
+          (@block-alloc #_vector n)))
+
+(def vector-make@2
+     (fun (n o)
+          (let ((v (@block-alloc #_vector n)))
+            (rec loop ((i 0))
+                 (if (< i n)
+                     (begin
+                       (@block-set! v i o)
+                       (loop (+ i 1)))))
+            v)))
+
+(def vector?
+     (fun (o)
+          (and (@block? o) (= #_vector (@block-tag o)))))
+
+(def vector-get
+     (fun (v n)
+          (@block-get v n)))
+
+(def vector-set!
+     (fun (v n o)
+          (@block-set! v n o)))
+
+(def vector-length
+     (fun (v)
+          (@block-length v)))
+
+(def vector-fill!
+     (fun (v o)
+          (rec loop ((i 0))
+               (if (< i (vector-length v))
+                   (begin
+                     (vector-set! v i o)
+                     (loop (+ i 1)))))))
+
+(def vector-tabulate
+     (fun (n f)
+          (let ((v (vector-make n)))
+            (rec loop ((i 0))
+                 (if (< i n)
+                     (begin
+                       (vector-set! v i (f i))
+                       (loop (+ i 1)))
+                     v)))))
+
+(def vector-swap!
+     (fun (v i1 i2)
+          (let ((t (vector-get v i1)))
+            (vector-set! v i1 (vector-get v i2))
+            (vector-set! v i2 t))))
+
+(def vector-shuffle!
+     (fun (v rng-seed)
+          (let ((rng (rng-make rng-seed))
+                (l (vector-length v)))
+            (rec loop ((i 0))
+                 (if (< i (- l 1))
+                     (let ((j (+ i (int-abs (%t (rng-next-int rng) (- l i))))))
+                       (vector-swap! v i j)
+                       (loop (+ i 1))))))))
+
+(def %vector-partition!
+     (fun (v p l h)
+          (rec loop ((l l) (h h))
+               (cond ((>= l h)
+                      l)
+                     ((p (vector-get v l))
+                      (loop (+ l 1) h))
+                     ((not (p (vector-get v (- h 1))))
+                      (loop l (- h 1)))
+                     (#t
+                      (vector-swap! v l (- h 1))
+                      (loop (+ l 1) (- h 1)))))))
+
+;; Reorganize the elements of the vector so that all those not
+;; satisfying the predicate [p] are before those that satisfy it.
+;; Return the index of the first element not satisfying [p], or the
+;; length of the vector if all elements satisfy [p].
+(def vector-partition!
+     (fun (v p)
+          (%vector-partition! v p 0 (vector-length v))))
+
+(def vector-fold-left
+     (fun (f z v)
+          (rec loop ((z z) (i 0))
+               (if (= i (vector-length v))
+                   z
+                   (loop (f z (vector-get v i)) (+ i 1))))))
+
+(def vector-for-each
+     (fun (f v)
+          (rec loop ((i 0))
+               (if (< i (vector-length v))
+                   (begin
+                     (f (vector-get v i))
+                     (loop (+ i 1)))))))
+
+(def vector-sort!
+     (fun (v el<)
+          (letrec ((qsort!
+                    (fun (l h)
+                         (if (> (- h l) 0)
+                             (let* ((p (vector-get v h))
+                                    (<p (fun (x) (el< x p)))
+                                    (m (%vector-partition! v <p l h)))
+                               (vector-swap! v m h)
+                               (qsort! l (- m 1))
+                               (qsort! (+ m 1) h))))))
+            (qsort! 0 (- (vector-length v) 1)))))
+
+(def vector-binary-search
+     (fun (v e el<)
+          (rec loop ((l 0) (h (- (vector-length v) 1)))
+               (if (> l h)
+                   (- -1 l)
+                   (let* ((m (+ l (/t (- h l) 2)))
+                          (me (vector-get v m)))
+                     (cond ((el< e me)
+                            (loop l (- m 1)))
+                           ((el< me e)
+                            (loop (+ m 1) h))
+                           (#t
+                            m)))))))
+
+(def vector->list
+     (fun (v)
+          (rec loop ((i (- (vector-length v) 1)))
+               (if (= i -1)
+                   list-empty
+                   (list-prepend (vector-get v i) (loop (- i 1)))))))
+
+(def list->vector
+     (fun (l)
+          (let* ((n (list-length l))
+                 (v (vector-make n)))
+            (rec loop ((i 0) (l l))
+                 (if (< i n)
+                     (begin
+                       (vector-set! v i (list-head l))
+                       (loop (+ i 1) (list-tail l)))
+                     v)))))

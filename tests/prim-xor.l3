@@ -1,0 +1,13 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @xor primitive
+
+(@byte-write 70)
+
+(@byte-write (@xor 0 65))                        ;A
+(@byte-write (@xor 66 0))                        ;B
+(@byte-write (@xor 66 1))                        ;C
+(@byte-write (@xor -1 -69))                      ;D
+(@byte-write (if (@= (@xor 2018 2018) 0) 69 63)) ;E
+(@byte-write (@xor 207 137))                     ;F
+

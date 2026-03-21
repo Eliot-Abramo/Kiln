@@ -1,0 +1,5 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Booleans
+
+(def boolean? (fun (o) (@bool? o)))

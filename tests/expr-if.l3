@@ -1,0 +1,28 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "if" expression
+
+(@byte-write 75)
+
+(if (@byte-write 65) 1 2)
+(@byte-write (if #t 66 63))
+(@byte-write (if #f 63 67))
+(if #t (@byte-write 68) (@byte-write 63))
+(if #f (@byte-write 63) (@byte-write 69))
+(if (@= #u (if #f 15))
+    (@byte-write 70))
+
+;; The condition has a side effect, and should therefore not be optimized away.
+;; This expression is made to enter cond mode in CL3ToCPSTranslator, where we
+;; want to check that it isn't optimized away
+(let ((a 71)) (if (if (@byte-write 71) #t #t) 1 2))
+
+;; These expressions are made to by optimized by cond mode in CL3ToCPSTranslator.
+(let ((x #t) (y #f))
+  (if (if x #t y) (@byte-write 72) (@byte-write 63)))
+(let ((x #t) (y #t))
+  (if (if x #f y) (@byte-write 63) (@byte-write 73)))
+(let ((x #f) (y #f))
+  (if (if x y #t) (@byte-write 74) (@byte-write 63)))
+(let ((x #f) (y #t))
+  (if (if x y #f) (@byte-write 63) (@byte-write 75)))

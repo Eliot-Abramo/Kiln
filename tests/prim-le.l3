@@ -1,0 +1,13 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @<= primitive
+
+(@byte-write 71)
+
+(@byte-write (if (@<= -1073741824 1073741823) 65 63)) ;A
+(@byte-write (if (@<= 1073741823 -1073741824) 63 66)) ;B
+(@byte-write (if (@<= 0 1) 67 63))                    ;C
+(@byte-write (if (@<= 1 0) 63 68))                    ;D
+(@byte-write (if (@<= 2018 2018) 69 63))              ;E
+(@byte-write (if (@<= 2017 2018) 70 63))              ;F
+(@byte-write (if (@<= -2018 -2017) 71 63))            ;G

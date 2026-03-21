@@ -1,0 +1,13 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "or" expression
+
+(@byte-write 70)
+
+(or (@byte-write 65) #u)
+(or #f (@byte-write 66))
+(or #t (@byte-write 63))
+(or (@byte-write 67) #t (@byte-write 63))
+(@byte-write (or 68 63))
+(@byte-write (or #f 69))
+(@byte-write (or #f #f 70))

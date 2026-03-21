@@ -1,0 +1,14 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @% primitive
+
+(@byte-write 72)
+
+(@byte-write (@% 65 66))                                      ;A
+(@byte-write (@% 133 67))                                     ;B
+(@byte-write (if (@= (@% 15 4) 3) 67 63))                     ;C
+(@byte-write (if (@= (@% 15 -4) 3) 68 63))                    ;D
+(@byte-write (if (@= (@% -15 4) -3) 69 63))                   ;E
+(@byte-write (if (@= (@% -15 -4) -3) 70 63))                  ;F
+(@byte-write (if (@= (@% -1073741824 1) 0) 71 63))            ;G
+(@byte-write (if (@= (@% 1073741823 2) 1) 72 63))             ;H

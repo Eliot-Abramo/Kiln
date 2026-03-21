@@ -1,0 +1,166 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; solutions are represented as integer list, where the index denotes the
+;; row (from the bottom), the value the column. for example, the solution
+;; for n = 4
+;;   _ _ _ _
+;;  | |o| | |
+;;  | | | |o|
+;;  |o| | | |
+;;  | | |o| |
+;;
+;; is represented as (3, 1, 4, 2)
+
+;; SOME USEFUL LIST FUNCTIONS
+
+(def list-range
+     (fun (f t)
+          (list-tabulate (+ 1 (- t f)) (fun (i) (+ f i)))))
+
+(def list-zip-with-index
+     (fun (l)
+          (list-zip l (list-range 1 (list-length l)))))
+
+(def list-int-print
+     (fun (l)
+          (char-print '(')
+                      (list-for-each (fun (elem)
+                                          (int-print elem)
+                                          (char-print ' '))
+                                     l)
+                      (char-print ')')))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CHECK IF NO TWO QUEENS IN A COLUMN
+
+;; essentially checks for duplicates
+(defrec col-ok
+  (fun (rows)
+       (or (list-empty? rows)
+           (and (list-every? (fun (x) (not (= (list-head rows) x)))
+                             (list-tail rows))
+                (col-ok (list-tail rows))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CHECK IF NO TWO QUEENS IN A DIAGONAL
+
+;; depth denotes how many rows x and y are separated
+(def on-diag
+     (fun (x y depth)
+          (or (= (+ x depth) y)
+              (= (- x depth) y))))
+
+(defrec diag-ok
+  (fun (rows)
+       (or (list-empty? rows)
+           (and (list-every? (fun (pair)
+                                  (not (on-diag (list-head rows)
+                                                (pair-fst pair)
+                                                (pair-snd pair))))
+                             (list-zip-with-index (list-tail rows))) ;; index is the row distance from (list-head rows)
+                (diag-ok (list-tail rows))))))
+
+;;;;;;;;;;;;;;;;;;;;;
+;; CHECKING SOLUTIONS
+
+(def partial-ok
+     (fun (rows)
+          (and (col-ok rows)
+               (diag-ok rows))))
+
+;; not actually used in the algorithm below
+(def queens-ok
+     (fun (rows n)
+          (and (list-every? (fun (x) (<= x n)) rows) ; no elt. bigger than n
+               (= n (list-length rows))              ; n queens
+               (partial-ok rows))))                  ; no conflict
+
+;;;;;;;;;;;;;;;;;;;;;
+;; FINDING A SOLUTION
+
+(def queens
+     (letrec ((%advance
+               (fun (partial n)
+                    (if (< (list-head partial) n)
+                        (%queens (list-prepend (+ 1 (list-head partial))
+                                               (list-tail partial))
+                                 n) ;; try next value of (list-head partial)
+                        list-empty)))   ;; there's no solution for (list-tail partial)
+              (%queens
+               (fun (partial n)
+                    (if (partial-ok partial)
+                        (if (= (list-length partial) n)
+                            partial ;; partial solution with full length: we're done
+                            (let ((sol (%queens (list-prepend 1 partial) n)))
+                              (if (list-empty? sol)
+                                  (%advance partial n)
+                                  sol)))
+                        (%advance partial n)))))
+       (fun (n) (%queens (list-make 1) n))))
+
+;;;;;;;;;;;
+;; PRINTING
+
+(defrec for
+  (fun (from to body)
+       (if (< from to)
+           (begin
+             (body from)
+             (for (+ from 1) to body)))))
+
+(def %header
+     (fun (rows)
+          (newline-print)
+          (int-print (list-length rows))
+          (string-print "-queen(s)")
+          (newline-print)
+          (string-print "list: ")
+          (list-int-print (list-reverse rows))
+          (newline-print)
+          (for 0 (list-length rows)
+               (fun (x) (string-print " _")))
+          (newline-print)))
+
+(def %row
+     (fun (p n)
+          (for 0 n
+               (fun (x)
+                    (string-print "|")
+                    (string-print (if (= (+ x 1) p) "o" " "))))
+          (string-print "|")
+          (newline-print)))
+
+(defrec %print-rows
+  (fun (rows n)
+       (if (= (list-length rows) n)
+           (%header rows))
+       (if (list-empty? rows)
+           (newline-print)
+           (begin
+             (%row (list-head rows) n)
+             (%print-rows (list-tail rows) n)))))
+
+(def print-solution
+     (fun (rows)
+          (if (= (list-length rows) 0)
+              (begin
+                (string-print "no solution found!")
+                (newline-print))
+              (%print-rows (list-reverse rows) (list-length rows)))))
+
+;;;;;;;;;;;;;;;;;
+;; USER INTERFACE
+
+(defrec tui
+  (fun ()
+       (string-print "enter size (0 to exit)> ")
+       (let ((size (int-read)))
+         (if (not (= size 0))
+             (begin
+               (print-solution (queens size))
+               (tui))))))
+
+
+;; "main"
+(tui)
+

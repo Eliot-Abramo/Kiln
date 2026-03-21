@@ -1,0 +1,15 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "halt" statement
+
+(@byte-write 66)
+
+(halt (begin
+        (@byte-write 65)
+        (halt (begin
+                (@byte-write 66)
+                0))
+        (@byte-write 63)
+        1))
+
+(@byte-write 63)

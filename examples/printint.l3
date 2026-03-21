@@ -1,0 +1,5 @@
+(string-print "Enter a number: ")
+(let ((n (int-read)))
+  (string-print "You entered ")
+  (int-print n)
+  (newline-print))

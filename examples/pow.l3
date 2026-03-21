@@ -1,0 +1,4 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+(int-print (int-pow 3 12)) ; should print 531441
+(newline-print)

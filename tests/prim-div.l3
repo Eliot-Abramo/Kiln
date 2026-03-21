@@ -1,0 +1,15 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @/ primitive
+
+(@byte-write 73)
+
+(@byte-write (@/ 65 1))                                       ;A
+(@byte-write (@/ 132 2))                                      ;B
+(@byte-write (@/ -201 -3))                                    ;C
+(@byte-write (if (@= (@/ 15 4) 3) 68 63))                     ;D
+(@byte-write (if (@= (@/ 15 -4) -3) 69 63))                   ;E
+(@byte-write (if (@= (@/ -15 4) -3) 70 63))                   ;F
+(@byte-write (if (@= (@/ -15 -4) 3) 71 63))                   ;G
+(@byte-write (if (@= (@/ -1073741824 -1) -1073741824) 72 63)) ;H
+(@byte-write (if (@= (@/ 1073741823 1073741823) 1) 73 63))    ;I

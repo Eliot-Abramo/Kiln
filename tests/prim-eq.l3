@@ -1,0 +1,19 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @= primitive
+
+(@byte-write 76)
+
+(@byte-write (if (@= #t #t) 65 63))                      ;A
+(@byte-write (if (@= #f #f) 66 63))                      ;B
+(@byte-write (if (@= 2018 2018) 67 63))                  ;C
+(@byte-write (if (@= 'A' 'A') 68 63))                    ;D
+(let ((s "bla")) (@byte-write (if (@= s s) 69 63)))      ;E
+(let ((f (fun () 1))) (@byte-write (if (@= f f) 70 63))) ;F
+
+(@byte-write (if (@= #t #f) 63 71))                  ;G
+(@byte-write (if (@= #t #u) 63 72))                  ;H
+(@byte-write (if (@= 2018 2017) 63 73))              ;I
+(@byte-write (if (@= 'A' 65) 63 74))                 ;J
+(@byte-write (if (@= "bla" "bla") 63 75))            ;K
+(@byte-write (if (@= (fun () 1) (fun () 1)) 63 76))  ;L

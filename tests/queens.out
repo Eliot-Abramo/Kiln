@@ -1,0 +1,12 @@
+enter size (0 to exit)> 
+6-queen(s)
+list: (5 3 1 6 4 2 )
+ _ _ _ _ _ _
+| |o| | | | |
+| | | |o| | |
+| | | | | |o|
+|o| | | | | |
+| | |o| | | |
+| | | | |o| |
+
+enter size (0 to exit)> 

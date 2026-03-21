@@ -1,0 +1,14 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "defrec" statement
+
+(@byte-write 67)
+
+(defrec succ (fun (x) (@+ x 1)))
+(@byte-write (succ 64))
+
+(defrec fact (fun (x) (if (@= x 0) 1 (@* x (fact (@- x 1))))))
+(@byte-write (@- (fact 5) 54))
+
+(defrec fact (fun (x) (@+ x 2)))
+(@byte-write (fact 65))

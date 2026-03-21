@@ -1,0 +1,139 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Conway's game of life
+;; (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+
+;; Notice that this program uses:
+;; - ANSI escape sequences, and so require a compatible terminal,
+;; - Unicode Block Elements [1], and so require a font supporting them.
+;;
+;; [1] https://unicode-table.com/en/blocks/block-elements/
+
+(def board-make@3
+     (fun (w h c)
+          (let ((b (@block-alloc #_board 3)))
+            (@block-set! b 0 w)
+            (@block-set! b 1 h)
+            (@block-set! b 2 c)
+            b)))
+
+(def board-make@2
+     (fun (w h)
+          (board-make w h (vector-make (* w h) #f))))
+
+(def board-width
+     (fun (b) (@block-get b 0)))
+
+(def board-height
+     (fun (b) (@block-get b 1)))
+
+(def board-cells
+     (fun (b) (@block-get b 2)))
+
+(def board-cell-index
+     (fun (b x y)
+          (let ((x1 (%f x (board-width b)))
+                (y1 (%f y (board-height b))))
+            (+ x1 (* y1 (board-width b))))))
+
+(def board-get
+     (fun (b x y)
+          (vector-get (board-cells b) (board-cell-index b x y))))
+
+(def board-get/int
+     (fun (b x y)
+          (if (board-get b x y) 1 0)))
+
+(def board-set!
+     (fun (b x y v)
+          (vector-set! (board-cells b) (board-cell-index b x y) v)))
+
+(def live-neighbors-count
+     (let ((offsets (list-make (pair-make -1  -1)
+                               (pair-make -1   0)
+                               (pair-make -1   1)
+                               (pair-make  0  -1)
+                               (pair-make  0   1)
+                               (pair-make  1  -1)
+                               (pair-make  1   0)
+                               (pair-make  1   1))))
+       (fun (b x y)
+            (list-fold-left
+             (fun (c os)
+                  (+ c
+                     (board-get/int b (+ x (pair-fst os)) (+ y (pair-snd os)))))
+             0
+             offsets))))
+
+(def evolve-board
+     (fun (b)
+          (let ((b1 (board-make (board-width b) (board-height b))))
+            (rec loop ((x (- (board-width b) 1))
+                       (y (- (board-height b) 1)))
+                 (let* ((n (live-neighbors-count b x y))
+                        (s (or (= n 3) (and (= n 2) (board-get b x y)))))
+                   (board-set! b1 x y s)
+                   (cond ((> y 0) (loop x (- y 1)))
+                         ((> x 0) (loop (- x 1) (- (board-height b) 1)))
+                         (#t b1)))))))
+
+(def draw-board
+     (let ((code " ▗▖▄▝▐▞▟▘▚▌▙▀▜▛█"))
+       (fun (b)
+            (rec loop ((y 0) (x 0))
+                 (let* ((b0 (board-get/int b (+ x 1) (+ y 1)))
+                        (b1 (board-get/int b x (+ y 1)))
+                        (b2 (board-get/int b (+ x 1) y))
+                        (b3 (board-get/int b x y))
+                        (i (int-bitwise-or
+                            (int-shift-left b3 3)
+                            (int-shift-left b2 2)
+                            (int-shift-left b1 1)
+                            (int-shift-left b0 0))))
+                   (char-print (string-get code i))
+                   (cond ((< x (- (board-width b) 1))
+                          (loop y (+ x 2)))
+                         ((< y (- (board-height b) 1))
+                          (newline-print)
+                          (loop (+ y 2) 0))
+                         (#t
+                          (newline-print))))))))
+
+(defrec animate-life
+  (fun (b n)
+       (string-print "[2J")     ;clear screen
+       (string-print "[40;37m") ;set black background, white foreground
+       (string-print "[?25l")   ;hide cursor
+       (rec loop ((b b) (n n))
+            (string-print "[;H")     ;move to top-left
+            (draw-board b)
+            (if (> n 0)
+                (loop (evolve-board b) (- n 1))))))
+
+(def b (board-make 158 68))
+(def glider-ul
+     (fun (b x y)
+          (board-set! b (+ x 1) (+ y 2) #t)
+          (board-set! b (+ x 2) (+ y 1) #t)
+          (board-set! b (+ x 0) (+ y 0) #t)
+          (board-set! b (+ x 1) (+ y 0) #t)
+          (board-set! b (+ x 2) (+ y 0) #t)))
+
+(def glider-dr
+     (fun (b x y)
+          (board-set! b (+ x 1) (+ y 0) #t)
+          (board-set! b (+ x 2) (+ y 1) #t)
+          (board-set! b (+ x 0) (+ y 2) #t)
+          (board-set! b (+ x 1) (+ y 2) #t)
+          (board-set! b (+ x 2) (+ y 2) #t)))
+
+(glider-dr b 4 4)
+(glider-dr b 10 5)
+(glider-ul b 13 15)
+(glider-ul b 5 20)
+(glider-ul b 17 22)
+(glider-ul b 23 5)
+(glider-ul b 2 7)
+(glider-ul b 19 33)
+
+(animate-life b 5000)

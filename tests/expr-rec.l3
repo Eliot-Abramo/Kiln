@@ -1,0 +1,10 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "rec" expression
+
+(@byte-write 65)
+
+(rec loop ((i 0) (j 65))
+     (if (@= j 0)
+         (@byte-write i)
+         (loop (@+ i 1) (@- j 1))))

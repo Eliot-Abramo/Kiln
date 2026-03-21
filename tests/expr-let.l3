@@ -1,0 +1,18 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "let" expression
+
+(@byte-write 69)
+
+(let ((A 65))
+  (@byte-write A))
+(let ((B 63))
+  (let ((B (@+ B 3)))
+    (@byte-write B)))
+(let ((C 67))
+  (@byte-write C)
+  (@byte-write (@+ C 1)))
+(@byte-write
+ (let ((E 69))
+   63
+   E))

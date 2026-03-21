@@ -1,0 +1,65 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Basic computations (addition, multiplication and factorial) on big
+;; numbers. These are represented as lists of "digits" in the base
+;; specified below, in order of increasing weight.
+
+(def %base 10000)
+
+(def int->bignum list-make@1)
+
+(def bignum-print
+  (fun (b)
+    (let ((rev-b (list-reverse b)))
+      (int-print (list-head rev-b))
+      (list-for-each (fun (d)
+                          (if (< d 1000) (int-print 0))
+                          (if (< d 100) (int-print 0))
+                          (if (< d 10) (int-print 0))
+                          (int-print d))
+                     (list-tail rev-b)))))
+
+(def bignum-+
+     (fun (b1 b2)
+          (rec loop ((b1 b1) (b2 b2) (carry 0))
+               (cond ((list-empty? b1)
+                      (if (= 0 carry) b2 (loop (int->bignum carry) b2 0)))
+                     ((list-empty? b2)
+                      (if (= 0 carry) b1 (loop b1 (int->bignum carry) 0)))
+                     (#t
+                      (let ((res (+ (list-head b1) (list-head b2) carry)))
+                        (list-prepend (%t res %base)
+                                      (loop (list-tail b1)
+                                            (list-tail b2)
+                                            (/t res %base)))))))))
+
+(def bignum-scale
+     (fun (b n)
+          (rec loop ((b b) (n n) (carry 0))
+               (if (list-empty? b)
+                   (if (= 0 carry) list-empty (int->bignum carry))
+                   (let ((sh (+ (* (list-head b) n) carry)))
+                     (list-prepend (%t sh %base)
+                                   (loop (list-tail b) n (/t sh %base))))))))
+
+(defrec bignum-*
+  (fun (b1 b2)
+       (if (list-empty? b1)
+           list-empty
+           (bignum-+ (bignum-scale b2 (list-head b1))
+                     (bignum-scale (bignum-* (list-tail b1) b2) %base)))))
+
+(def bignum-zero? list-empty?)
+
+(defrec bignum-fact
+  (fun (n)
+       (if (= 0 n)
+           (int->bignum 1)
+           (bignum-* (int->bignum n) (bignum-fact (- n 1))))))
+
+(string-print "Factorial of? ")
+(let ((n (int-read)))
+  (int-print n)
+  (string-print "! = ")
+  (bignum-print (bignum-fact n))
+  (newline-print))

@@ -1,0 +1,8 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @block-length primitive
+
+(@byte-write 66)
+
+(@byte-write (@block-length (@block-alloc #_- 65))) ;A
+(@byte-write (@block-length (@block-alloc #_- 66))) ;B

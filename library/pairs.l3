@@ -1,0 +1,34 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Pairs
+
+(def pair-make (fun (fst snd)
+                    (let ((p (@block-alloc #_pair 2)))
+                      (@block-set! p 0 fst)
+                      (@block-set! p 1 snd)
+                      p)))
+
+(def pair?
+     (fun (o)
+          (and (@block? o) (= #_pair (@block-tag o)))))
+
+(def pair-fst
+     (fun (p)
+          (@block-get p 0)))
+
+(def pair-snd
+     (fun (p)
+          (@block-get p 1)))
+
+(def pair-derive=
+     (fun (fst= snd=)
+          (fun (p1 p2)
+               (and (fst= (pair-fst p1) (pair-fst p2))
+                    (snd= (pair-snd p1) (pair-snd p2))))))
+
+(def pair-derive<
+     (fun (fst< snd<)
+          (fun (p1 p2)
+               (or (fst< (pair-fst p1) (pair-fst p2))
+                   (and (not (fst< (pair-fst p2) (pair-fst p1)))
+                        (snd< (pair-snd p1) (pair-snd p2)))))))

@@ -1,0 +1,12 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @and primitive
+
+(@byte-write 69)
+
+(@byte-write (@and #x7FFFFFFF 65))      ;A
+(@byte-write (@and 66 #x7FFFFFF))       ;B
+(@byte-write (@and 67 -1))              ;C
+(@byte-write (@and -1 68))              ;D
+(@byte-write (@and 69 237))             ;E
+

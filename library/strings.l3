@@ -1,0 +1,41 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Strings
+
+(def string?
+     (fun (o)
+          (and (@block? o) (= #__string (@block-tag o)))))
+
+(def string-length
+     (fun (s)
+          (@block-length s)))
+
+(def string-get
+     (fun (s i)
+          (@block-get s i)))
+
+(def string-print
+     (fun (s)
+          (rec loop ((i 0))
+               (if (< i (string-length s))
+                   (begin
+                     (char-print (string-get s i))
+                     (loop (+ i 1)))))))
+
+(def string-concat
+     (fun (s1 s2)
+          (let* ((l1 (string-length s1))
+                 (l2 (string-length s2))
+                 (n (+ l1 l2))
+                 (s (@block-alloc #__string n)))
+            (rec loop ((i 0))
+                 (if (< i l1)
+                     (begin
+                       (@block-set! s i (@block-get s1 i))
+                       (loop (+ i 1)))))
+            (rec loop ((i 0))
+                 (if (< i l2)
+                     (begin
+                       (@block-set! s (+ i l1) (@block-get s2 i))
+                       (loop (+ i 1)))))
+            s)))

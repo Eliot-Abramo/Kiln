@@ -1,0 +1,60 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Mutable disjoint sets / equivalence classes (a.k.a. "union-find").
+;; See https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+
+(def diset-make
+     (fun ()
+          (let ((e (@block-alloc #_diset 2)))
+            (@block-set! e 0 #f)       ;parent (#f for representative)
+            (@block-set! e 1 1)        ;rank
+            e)))
+
+(def %diset-parent
+     (fun (e)
+          (@block-get e 0)))
+
+(def %diset-set-parent!
+     (fun (e p)
+          (@block-set! e 0 p)
+          #u))
+
+(def %diset-rank
+     (fun (e)
+          (@block-get e 1)))
+
+(def %diset-set-rank!
+     (fun (e r)
+          (@block-set! e 1 r)
+          #u))
+
+(defrec %diset-repr
+  (fun (e)
+       (let ((maybe-parent (%diset-parent e)))
+         (if maybe-parent
+             (let ((repr (%diset-repr maybe-parent)))
+               (%diset-set-parent! e repr) ;path compression
+               repr)
+             e))))
+
+(def diset?
+     (fun (o)
+          (and (@block? o) (= #_diset (@block-tag o)))))
+
+(def diset-merge!
+     (fun (e1 e2)
+          (let ((repr1 (%diset-repr e1))
+                (repr2 (%diset-repr e2)))
+            (if (!= repr1 repr2)
+                (let ((rank1 (%diset-rank repr1)) (rank2 (%diset-rank repr2)))
+                  (cond ((< rank1 rank2)
+                         (%diset-set-parent! repr1 repr2))
+                        ((< rank2 rank1)
+                         (%diset-set-parent! repr2 repr1))
+                        (#t             ;(= rank1 rank2)
+                         (%diset-set-parent! repr1 repr2)
+                         (%diset-set-rank! repr2 (+ 1 rank2)))))))))
+
+(def diset-same?
+     (fun (e1 e2)
+          (= (%diset-repr e1) (%diset-repr e2))))

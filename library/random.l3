@@ -1,0 +1,67 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; A PCG random number generator. (Specifically, this is the variant
+;; called XSH RR in the paper, with a 16-bit state and 8-bit output).
+;; See https://www.pcg-random.org/
+
+(def %rng-to-uint16
+     (fun (i) (int-bitwise-and #xFFFF i)))
+
+(def %rng-to-uint8
+     (fun (i) (int-bitwise-and #xFF i)))
+
+(def rng-make
+     (fun (seed)
+          (let ((rng (@block-alloc #_rng 1)))
+            (@block-set! rng 0 (%rng-to-uint16 seed))
+            rng)))
+
+(def rng?
+     (fun (o)
+          (and (@block? o) (= #_rng (@block-tag o)))))
+
+(def %rng-get-state
+     (fun (rng)
+          (@block-get rng 0)))
+
+(def %rng-set-state!
+     (fun (rng new-state)
+          (@block-set! rng 0 (%rng-to-uint16 new-state))))
+
+(def %rng-rotate-right-8
+     (fun (x y)
+          (%rng-to-uint8 (int-bitwise-or (int-shift-right x y)
+                                         (int-shift-left x (- 8 y))))))
+
+(def %rng-step
+     (fun (rng)
+          (%rng-set-state! rng (+ (* (%rng-get-state rng) 12829) 47989))))
+
+(def %rng-output
+     (fun (rng)
+          (let ((state (%rng-get-state rng)))
+            (%rng-rotate-right-8
+             (%rng-to-uint8 (int-shift-right
+                             (int-bitwise-xor state (int-shift-right state 5))
+                             5))
+             (int-shift-right state 13)))))
+
+;; Return the next 8-bit unsigned integer (0 to 255, included)
+(def rng-next-int8
+     (fun (rng)
+          (let ((i (%rng-output rng)))
+            (%rng-step rng)
+            i)))
+
+;; FIXME: this is hackish, find a better way to do it (probably using
+;; multiple streams, see sample/pcg32x2-demo.c in the PCG source).
+(def rng-next-int
+     (fun (rng)
+          (let ((b0 (rng-next-int8 rng))
+                (b1 (rng-next-int8 rng))
+                (b2 (rng-next-int8 rng))
+                (b3 (rng-next-int8 rng)))
+            (int-bitwise-or (int-shift-left b0 24)
+                            (int-shift-left b1 16)
+                            (int-shift-left b2 8)
+                            b3))))

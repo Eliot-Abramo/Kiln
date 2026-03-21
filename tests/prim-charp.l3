@@ -1,0 +1,14 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @char? primitive
+
+(@byte-write 72)
+
+(@byte-write (if (@char? 'A') 65 63))   ;A
+(@byte-write (if (@char? '€') 66 63))   ;B
+(@byte-write (if (@char? ' ') 67 63))   ;C
+(@byte-write (if (@char? 1) 63 68))     ;D
+(@byte-write (if (@char? "1") 63 69))   ;E
+(@byte-write (if (@char? #t) 63 70))    ;F
+(@byte-write (if (@char? #f) 63 71))    ;G
+(@byte-write (if (@char? #u) 63 72))    ;H

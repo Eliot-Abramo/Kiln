@@ -1,0 +1,11 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Functions
+
+(def function?
+     (fun (o)
+          (and (@block? o) (@= #__function (@block-tag o)))))
+
+(def function-compose
+     (fun (f g)
+          (fun (x) (f (g x)))))

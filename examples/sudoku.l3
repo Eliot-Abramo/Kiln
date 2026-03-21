@@ -1,0 +1,317 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; brute force sudoku solver using backtracking
+
+
+;; some list functions
+
+(defrec flat-map
+  (fun (f l)
+    (if (list-empty? l)
+        l
+        (list-append (f (list-head l)) (flat-map f (list-tail l))))))
+
+(defrec index-of
+  (fun (p i l)
+    (if (list-empty? l)
+      -1
+      (if (p (list-head l))
+        i
+        (index-of p (+ i 1) (list-tail l))))))
+
+(defrec list-n
+  (fun (init n)
+       (list-tabulate n (fun (i) init))))
+
+(defrec list-get-value
+  (fun (list index)
+    (if (= 1 index)
+      (list-head list)
+      (list-get-value (list-tail list) (- index 1)))))
+
+(defrec list-set-value
+  (fun (list index value)
+    (if (= 1 index)
+      (list-prepend value (list-tail list))
+      (list-prepend
+        (list-head list)
+        (list-set-value (list-tail list) (- index 1) value)))))
+
+
+;; functions on tables
+
+
+(def create-table
+  (fun (n)
+    (let ((size (* n n)))
+      (list-n (list-n 0 size) size))))
+
+
+(defrec transpose
+  (fun (table)
+    (if (list-empty? (list-head table))
+      table
+      (list-prepend
+        (list-map (fun (row) (list-head row)) table)
+        (transpose (list-map (fun (row) (list-tail row)) table))))))
+
+
+(defrec table-get-value
+  (fun (table cell)
+    (if (= 1 (list-head cell))
+      (list-get-value (list-head table) (list-tail cell))
+      (table-get-value
+        (list-tail table)
+        (list-prepend (- (list-head cell) 1) (list-tail cell))))))
+
+
+(defrec table-set-value
+  (fun (table cell value)
+    (if (= 1 (list-head cell))      ;; current row?
+      (list-prepend
+        (list-set-value (list-head table) (list-tail cell) value)
+        (list-tail table))
+      (list-prepend
+        (list-head table)
+        (table-set-value
+          (list-tail table)
+          (list-prepend (- (list-head cell) 1) (list-tail cell))
+          value)))))
+
+
+(defrec table-init
+  (fun (table cells values)
+    (if (list-empty? cells)
+      table
+      (table-init
+        (table-set-value table (list-head cells) (list-head values))
+        (list-tail cells)
+        (list-tail values)))))
+
+
+(defrec table-get-row
+  (fun (table i)
+    (if (= 1 i)
+      (list-head table)
+      (table-get-row (list-tail table) (- i 1)))))
+
+(def table-get-col
+  (fun (table i)
+    (table-get-row (transpose table) i)))
+
+
+;;;;;;;;;;;;;;;
+;; VERIFICATION
+
+;; no duplicates in the list (except 0's)
+(defrec list-no-duplicates
+  (fun (list)
+    (if (list-empty? list)
+        #t
+        (and
+          (list-every?
+            (fun (x) (or (= x 0) (not (= (list-head list) x))))
+            (list-tail list))
+          (list-no-duplicates (list-tail list))))))
+
+;; check if no duplicates in rows
+(def rows-ok
+  (fun (table)
+    (list-every?
+      (fun (row) (list-no-duplicates row))
+      table)))
+
+;; check if no duplicates in columns
+(def cols-ok
+  (fun (table)
+    (rows-ok (transpose table))))
+
+
+;; blockrows contains the first n rows of a sudoku, e.g.
+;; +-----+-----+
+;; | 1 2 | 3 4 |
+;; | 3 4 | 1 2 |
+;; +-----+-----+
+(defrec %blockrows-ok
+  (fun (blockrows n)
+    (if (list-empty? (list-head blockrows))
+      #t
+      (and
+        (list-no-duplicates
+          (flat-map (fun (row) (list-take row n)) blockrows))
+        (%blockrows-ok (list-map (fun (row) (list-drop row n)) blockrows) n)))))
+
+
+;; check if no duplicates in blocks (n x n)
+(defrec blocks-ok
+  (fun (table n)
+    (if (= 0 (list-length table))
+      #t
+      (and
+        (%blockrows-ok (list-take table n) n)
+        (blocks-ok (list-drop table n) n)))))
+
+
+;; no duplicates (but incomplete solution, i.e. with zeros)
+(def partial-ok
+  (fun (table n)
+    (and (rows-ok table)
+         (cols-ok table)
+         (blocks-ok table n))))
+
+
+;; all numbers between 0 and n
+(def numbers-ok
+  (fun (table n)
+    (list-every?
+      (fun (num) (and (> num 0) (<= num (* n n))))
+      (flat-map (fun (row) row) table))))
+
+
+;; sudoku solved
+(def table-ok
+  (fun (table n)
+    (and (rows-ok table)
+         (cols-ok table)
+         (numbers-ok table n)
+         (blocks-ok table n))))
+
+
+
+;;;;;;;;;;;
+;; PRINTING
+
+(defrec for
+  (fun (from to body)
+    (if (< from to)
+        (begin
+          (body from)
+          (for (+ from 1) to body))
+        0)))
+
+
+(def %header
+  (fun (n)
+    (for 0 n
+      (fun (x)
+        (string-print "+")
+        (for 0 (+ (* n 2) 1)
+          (fun (x) (string-print "-")))))
+    (string-print "+")
+    (newline-print)))
+
+(def %row
+  (fun (row n)
+    (for 0 (* n n)
+      (fun (x)
+        (if (= 0 (%t x n))
+          (string-print "| ")
+          0)
+        (let ((v (list-head (list-drop row x))))
+          (if (= v 0)
+            (string-print " ")
+            (int-print v))
+          (string-print " "))))
+     (string-print "|")
+     (newline-print)))
+
+
+(def print-table
+  (fun (rows n)
+    (int-print n)
+    (string-print "-sudoku")
+    (newline-print)
+    (for 0 n
+      (fun (x)
+        (%header n)
+        (for 0 n
+          (fun (y)
+            (%row (list-head (list-drop rows (+ (* x n) y))) n)))))
+    (%header n)
+    (newline-print)))
+
+
+
+;;;;;;;;;;;;;;;;;;;;
+;; SOLVING ALGORITHM
+
+
+(def %next-zero-cell
+  (fun (table)
+    (let*
+      ( (rowi
+          (index-of
+            (fun (row) (list-any? (fun (x) (= 0 x)) row))
+            1
+            table))
+        (row (list-head (list-drop table (- rowi 1))))
+        (coli
+          (index-of
+            (fun (x) (= x 0))
+            1
+            row)))
+      (list-prepend rowi coli))))
+
+
+(def sudoku
+  (letrec
+      ((%advance (fun (table cell n)
+                      (let ((val (table-get-value table cell)))
+                        (if (< val (* n n))
+                            (%sudoku (table-set-value table cell (+ val 1)) cell n)
+                            list-empty))))
+       ;; find solutions by trying values on 'cell' of 'table'
+       (%sudoku (fun (table cell n)
+                     (if (and (> (table-get-value table cell) 0) (partial-ok table n))
+                         (if (numbers-ok table n)    ;; partial solution with all numbers > 0: we're done
+                             table
+                             (let ((sol (%sudoku table (%next-zero-cell table) n)))
+                               (if (list-empty? sol)
+                                   (%advance table cell n)
+                                   sol)))
+                         (%advance table cell n)))))
+    (fun (table n) (%sudoku table (%next-zero-cell table) n))))
+
+;;;;;;;;;;;;;;;
+;; SOME TESTING
+
+
+;; solution for
+(def table2
+  (list-make (list-make 1 2 3 4) (list-make 3 4 1 2) (list-make 2 1 4 3) (list-make 4 3 2 1)))
+
+;; sudoku from http://www.nzz.ch/magazin/unterhaltung/sudoku, 6.2.2009, schwer
+(def nzz
+  (table-init
+    (create-table 3)
+    (list-append (list-make (list-prepend 1 1) (list-prepend 1 2) (list-prepend 1 6) (list-prepend 1 7) (list-prepend 2 1) (list-prepend 2 2) (list-prepend 2 5) (list-prepend 2 6) (list-prepend 2 8))
+      (list-append (list-make (list-prepend 2 9) (list-prepend 3 2) (list-prepend 3 3) (list-prepend 3 6) (list-prepend 3 8) (list-prepend 4 5) (list-prepend 4 8) (list-prepend 5 6) (list-prepend 5 7))
+        (list-append (list-make (list-prepend 6 3) (list-prepend 6 5) (list-prepend 6 9) (list-prepend 7 3) (list-prepend 7 4) (list-prepend 7 6) (list-prepend 7 8) (list-prepend 8 1) (list-prepend 8 2))
+                (list-make (list-prepend 9 1) (list-prepend 9 6) (list-prepend 9 7)))))
+    (list-append (list-make 1 9 5 4 6 3 9 2 7)
+      (list-append (list-make 8 5 7 6 2 4 9 7 2)
+        (list-append (list-make 3 1 7 1 8 4 6 4 8)
+                (list-make 7 1 3))))))
+
+
+;; example sudoku (very hard to solve for brute force algorithm), from
+;; https://en.wikipedia.org/wiki/Sudoku_solving_algorithms
+(def hard
+  (table-init
+    (create-table 3)
+    (list-append (list-make (list-prepend 2 6) (list-prepend 2 8) (list-prepend 2 9) (list-prepend 3 3) (list-prepend 3 5) (list-prepend 4 4) (list-prepend 4 6) (list-prepend 5 3) (list-prepend 5 7))
+            (list-make (list-prepend 6 2) (list-prepend 7 1) (list-prepend 7 8) (list-prepend 7 9) (list-prepend 8 3) (list-prepend 8 5) (list-prepend 9 5) (list-prepend 9 9)))
+    (list-append (list-make 3 8 5 1 2 5 7 4 1) (list-make 9 5 7 3 2 1 4 9))))
+
+
+;; empty 2-sudoku (quick)
+(print-table (sudoku (create-table 2) 2) 2)
+
+;; empty 3-sudoku (some seconds)
+(print-table (sudoku (create-table 3) 3) 3)
+
+;; nzz 3-sudoku (some seconds)
+(print-table (sudoku nzz 3) 3)
+
+;; very hard 3-sudoku (about an hour?)
+;; (print-table (sudoku hard 3) 3)

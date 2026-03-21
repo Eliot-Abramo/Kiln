@@ -1,0 +1,89 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Characters
+
+(def newline (@int->char 10))
+
+(def char? (fun (o) (@char? o)))
+
+(def char->int (fun (c)
+                    (@char->int c)))
+
+(def int->char (fun (c)
+                    (@int->char c)))
+
+(def char-read
+     (let ((read-cont-byte (fun () (@and (@byte-read) #b00111111)))
+           (<< (fun (x y) (@shift-left x y)))
+           (b-and (fun (x y) (@and x y)))
+           (b-or@2 (fun (x y) (@or x y)))
+           (b-or@3 (fun (x y z) (@or (@or x y) z)))
+           (b-or@4 (fun (x y z t) (@or (@or x y) (@or z t))))
+           (= (fun (x y) (@= x y))))
+       (fun ()
+            (let ((b0 (@byte-read)))
+              (cond
+               ((= -1 b0)                            ;EOF
+                #f)
+               ((= 0 (b-and #b10000000 b0))          ;1 byte
+                (int->char b0))
+               ((= #b11000000 (b-and #b11100000 b0)) ;2 bytes
+                (let ((b1 (read-cont-byte)))
+                  (int->char (b-or (<< (b-and #b11111 b0) 6)
+                                   b1))))
+               ((= #b11100000 (b-and #b11110000 b0)) ;3 bytes
+                (let ((b1 (read-cont-byte))
+                      (b2 (read-cont-byte)))
+                  (int->char (b-or (<< (b-and #b1111 b0) 12)
+                                   (<< b1 6)
+                                   b2))))
+               (#t                                   ;4 bytes
+                (let ((b1 (read-cont-byte))
+                      (b2 (read-cont-byte))
+                      (b3 (read-cont-byte)))
+                  (int->char (b-or (<< (b-and #b111 b0) 18)
+                                   (<< b1 12)
+                                   (<< b2 6)
+                                   b3)))))))))
+
+(def char-print
+     (let ((<= (fun (x y) (@<= x y)))
+           (>> (fun (x y) (@shift-right x y)))
+           (b-and (fun (x y) (@and x y)))
+           (b-or (fun (x y) (@or x y))))
+       (fun (c)
+            (let ((p (char->int c)))
+              (cond
+               ((<= p #x00007F)                      ;1 byte
+                (@byte-write p))
+               ((<= p #x0007FF)                      ;2 bytes
+                (@byte-write (b-or #b11000000 (>> p 6)))
+                (@byte-write (b-or #b10000000 (b-and p #b111111))))
+               ((<= p #x00FFFF)                      ;3 bytes
+                (@byte-write (b-or #b11100000 (>> p 12)))
+                (@byte-write (b-or #b10000000 (b-and (>> p 6) #b111111)))
+                (@byte-write (b-or #b10000000 (b-and p #b111111))))
+               (#t                                   ;4 bytes
+                (@byte-write (b-or #b11110000 (>> p 18)))
+                (@byte-write (b-or #b10000000 (b-and (>> p 12) #b111111)))
+                (@byte-write (b-or #b10000000 (b-and (>> p 6) #b111111)))
+                (@byte-write (b-or #b10000000 (b-and p #b111111)))))))))
+
+(def newline-print (fun () (char-print newline)))
+
+(def char-digit?
+     (let ((int-0 (@char->int '0'))
+           (int-9 (@char->int '9')))
+       (fun (c)
+            (let ((int-c (@char->int c)))
+              (and (@<= int-0 int-c) (@<= int-c int-9))))))
+
+(def char-digit->int
+     (let ((int-0 (@char->int '0')))
+       (fun (c)
+            (@- (@char->int c) int-0))))
+
+(def int->char-digit
+     (let ((int-0 (@char->int '0')))
+       (fun (i)
+            (@int->char (@+ i int-0)))))

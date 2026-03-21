@@ -1,0 +1,8 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @block-alloc primitive
+
+(@byte-write 66)
+
+(@byte-write (if (@= (@block-alloc #_- 0) (@block-alloc #_- 0)) 63 65)) ;A
+(@byte-write (if (not (@= (@block-alloc #_- 0) (@block-alloc #_- 0))) 66 63)) ;B

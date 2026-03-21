@@ -1,0 +1,9 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "not" expression
+
+(@byte-write 67)
+
+(@byte-write (if (@= #t (not #f)) 65 63))
+(@byte-write (if (@= #f (not #t)) 66 63))
+(@byte-write (if (@= #f (not 42)) 67 63))

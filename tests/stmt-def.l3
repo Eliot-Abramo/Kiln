@@ -1,0 +1,14 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "def" statement
+
+(@byte-write 67)
+
+(def A 65)
+(@byte-write A)
+
+(def B (begin 63 66))
+(@byte-write B)
+
+(def A 67)
+(@byte-write A)

@@ -1,0 +1,5 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Unit
+
+(def unit? (fun (o) (@unit? o)))

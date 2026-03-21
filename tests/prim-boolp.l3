@@ -1,0 +1,11 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @bool? primitive
+
+(@byte-write 69)
+
+(@byte-write (if (@bool? #t) 65 63))    ;A
+(@byte-write (if (@bool? #f) 66 63))    ;B
+(@byte-write (if (@bool? 1) 63 67))     ;C
+(@byte-write (if (@bool? "1") 63 68))   ;D
+(@byte-write (if (@bool? #u) 63 69))    ;E

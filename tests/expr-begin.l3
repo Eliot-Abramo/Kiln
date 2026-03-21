@@ -1,0 +1,16 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "begin" expression
+
+(@byte-write 67)
+
+(begin
+  (@byte-write 65)
+  (@byte-write 66))
+
+(let ((b (@block-alloc #_- 2)))
+  (@byte-write
+   (begin
+     (@block-set! b 0 60)
+     (@block-set! b 1  7)
+     (@+ (@block-get b 0) (@block-get b 1)))))

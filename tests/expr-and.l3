@@ -1,0 +1,14 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "and" expression
+
+(@byte-write 71)
+
+(and (@byte-write 65) #u)
+(and #t (@byte-write 66))
+(and #f (@byte-write 63))
+(and (@byte-write 67) #f (@byte-write 63))
+(@byte-write (and 63 68))
+(@byte-write (and #t 69))
+(@byte-write (and #t 'a' 70))
+(@byte-write (and "a" #u 63 71))

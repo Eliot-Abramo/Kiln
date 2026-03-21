@@ -1,0 +1,15 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @block-get and @block-set! primitives
+
+(@byte-write 68)
+
+(let ((b (@block-alloc #_- 4)))
+  (@block-set! b 0 'a')
+  (@block-set! b 1 'b')
+  (@block-set! b 2 'c')
+  (@block-set! b 3 'd')
+  (@byte-write (if (@= (@block-get b 0) 'a') 65 63))
+  (@byte-write (if (@= (@block-get b 1) 'b') 66 63))
+  (@byte-write (if (@= (@block-get b 2) 'c') 67 63))
+  (@byte-write (if (@= (@block-get b 3) 'd') 68 63)))

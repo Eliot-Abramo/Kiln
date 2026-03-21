@@ -1,0 +1,53 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Pascal's triangle
+
+(defrec zip
+  (fun (l1 l2)
+       (if (list-empty? l1)
+           list-empty
+           (list-prepend
+            (list-prepend (list-head l1) (list-head l2))
+            (zip (list-tail l1) (list-tail l2))))))
+
+(defrec %pascal
+  (fun (n)
+       (if (= n 1)
+           (list-make (list-make 1))
+           (let* ((p (%pascal (- n 1)))
+                  (p1 (zip (list-head p) (list-prepend 0 (list-head p))))
+                  (p2 (list-map (fun (pair)
+                                     (+ (list-head pair) (list-tail pair)))
+                                p1)))
+             (list-prepend (list-append p2 (list-make 1)) p)))))
+
+(def pascal (fun (n) (list-reverse (%pascal n))))
+
+(def list-int-print
+     (fun (l)
+          (char-print '(')
+                      (list-for-each (fun (elem)
+                                          (int-print elem)
+                                          (char-print ' '))
+                                     l)
+                      (char-print ')')))
+
+(def print-pascal
+     (fun (p)
+          (list-map
+           (fun (l)
+                (list-int-print l)
+                (newline-print))
+           p)))
+
+(defrec tui
+  (fun ()
+       (string-print "enter size (0 to exit)> ")
+       (let ((size (int-read)))
+         (if (= size 0)
+             0
+             (begin
+               (print-pascal (pascal size))
+               (tui))))))
+
+(tui)

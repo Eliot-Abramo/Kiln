@@ -1,0 +1,18 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "cond" expression
+
+(@byte-write 68)
+
+(cond (#t (@byte-write 65))
+      (#t (@byte-write 63)))
+
+(cond (#f (@byte-write 63))
+      (#f (@byte-write 63))
+      (#t (@byte-write 66)))
+
+(@byte-write (cond (#f 63)
+                   (67 67)
+                   (#t 63)))
+
+(cond ((@= #u (cond (#f 12))) (@byte-write 68)))

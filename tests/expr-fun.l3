@@ -1,0 +1,33 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the "fun" expression
+
+(@byte-write 74)
+
+((fun (b) (@byte-write b)) 65)
+((fun (b)
+      (@byte-write b)
+      (@byte-write (@+ b 1)))
+ 66)
+(@byte-write ((fun (x) x) 68))
+
+(let ((compose (fun (f g)
+                    (fun (x) (f (g x)))))
+      (succ (fun (x) (@+ x 1)))
+      (twice (fun (x) (@+ x x))))
+  (@byte-write ((compose succ twice) 34)))
+
+((let ((a (@byte-write 70)))
+   (fun (x y z) a))
+ (@byte-write 71)
+ (@byte-write 72)
+ (@byte-write 73))
+
+(let* ((fact (fun (self x)
+                   (if (@= 0 x)
+                       1
+                       (@* x (self self (@- x 1))))))
+       (fix (fun (f x)
+                 (f f x))))
+  (if (@= (fix fact 5) 120)
+      (@byte-write 74)))

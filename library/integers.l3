@@ -1,0 +1,158 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Integers
+
+(def int? (fun (o) (@int? o)))
+
+;; Basic arithmetic
+(def +@2 (fun (x y) (@+ x y)))
+(def +@3 (fun (x y z) (@+ x (@+ y z))))
+(def +@4 (fun (x y z t) (@+ (@+ x y) (@+ z t))))
+(def + +@2)
+
+(def -@1 (fun (x) (@- 0 x)))
+(def -@2 (fun (x y) (@- x y)))
+(def - -@2)
+
+(def *@2 (fun (x y) (@* x y)))
+(def *@3 (fun (x y z) (@* x (@* y z))))
+(def *@4 (fun (x y z t) (@* (@* x y) (@* z t))))
+(def * *@2)
+
+;; Truncated division
+(def /t (fun (x y) (@/ x y)))
+(def %t (fun (x y) (@% x y)))
+
+;; Comparisons
+(def <@2 (fun (x y) (@< x y)))
+(def <@3 (fun (x y z) (and (@< x y) (@< y z))))
+(def < <@2)
+
+(def <=@2 (fun (x y) (@<= x y)))
+(def <=@3 (fun (x y z) (and (@<= x y) (@<= y z))))
+(def <= <=@2)
+
+(def >@2 (fun (x y) (@< y x)))
+(def >@3 (fun (x y z) (and (> x y) (> y z))))
+(def > >@2)
+
+(def >=@2 (fun (x y) (@<= y x)))
+(def >=@3 (fun (x y z) (and (>= x y) (>= y z))))
+(def >= >=@2)
+
+(def = (fun (x y) (@= x y)))
+(def != (fun (x y) (not (@= x y))))
+
+(def int-min (fun (x y) (if (<= x y) x y)))
+(def int-max (fun (x y) (if (>= x y) x y)))
+
+;; Bitwise operations
+(def int-shift-left (fun (x y) (if (>= y 31) 0 (@shift-left x y))))
+
+(def int-shift-right (fun (x y) (if (>= y 31) 0 (@shift-right x y))))
+
+(def int-bitwise-and (fun (x y) (@and x y)))
+(def int-bitwise-or@2 (fun (x y) (@or x y)))
+(def int-bitwise-or@3 (fun (x y z) (@or (@or x y) z)))
+(def int-bitwise-or@4 (fun (x y z t) (@or (@or x y) (@or z t))))
+(def int-bitwise-or int-bitwise-or@2)
+(def int-bitwise-xor (fun (x y) (@xor x y)))
+(def int-bitwise-not (fun (x) (@xor x #x7FFFFFFF)))
+
+;; Return a mask for the n least-significant bits
+(def int-mask
+     (fun (n) (- (int-shift-left 1 n) 1)))
+
+;; Extract n bits from x, starting from bit s
+(def int-extract
+     (fun (x s n)
+          (int-bitwise-and (int-shift-right x s) (int-mask n))))
+
+(def int-even?
+     (fun (i)
+          (= 0 (int-bitwise-and 1 i))))
+
+(def int-odd?
+     (fun (i)
+          (not (int-even? i))))
+
+(def int-abs
+     (fun (i)
+          (if (< i 0) (- i) i)))
+
+(def int-signum
+     (fun (i)
+          (cond ((< i 0) -1)
+                ((= i 0)  0)
+                (#t       1))))
+
+;; Adapted from "Hacker's Delight" by Henry Warren (2nd ed.)
+(def int-count-leading-zeros
+     (fun (i)
+          (if (< i 0)
+              0
+              (rec loop ((i i) (n 31) (c 16))
+                   (if (= 0 c)
+                       (- n i)
+                       (let ((y (@shift-right i c)))
+                         (if (= 0 y)
+                             (loop i n (@shift-right c 1))
+                             (loop y (- n c) (@shift-right c 1)))))))))
+
+;; Floored division
+(def /f
+     (fun (x y)
+          (let ((qt (/t x y)) (rt (%t x y)))
+            (if (= (int-signum rt) (- (int-signum y)))
+                (- qt 1)
+                qt))))
+
+(def %f
+     (fun (x y)
+          (let ((rt (%t x y)))
+            (if (= (int-signum rt) (- (int-signum y)))
+                (+ rt y)
+                rt))))
+
+(def int-gcd
+     (fun (x y)
+          (rec loop ((x (int-abs x))
+                     (y (int-abs y)))
+               (if (= 0 y)
+                   x
+                   (loop y (%t x y))))))
+
+(def int-pow
+     (fun (x y)
+          (rec loop ((x x) (y y))
+               (cond ((= 0 y)
+                      1)
+                     ((int-even? y)
+                      (let ((t (loop x (/t y 2))))
+                        (* t t)))
+                     (#t
+                      (* x (loop x (- y 1))))))))
+
+(def int-read
+     (letrec ((loop
+               (fun (acc-f acc)
+                    (let ((c (char-read)))
+                      (if (char-digit? c)
+                          (loop acc-f (acc-f (* acc 10) (char-digit->int c)))
+                          acc)))))
+       (fun ()
+            (let ((c (char-read)))
+              (cond ((= c '-') (loop - 0))
+                    ((char-digit? c) (loop + (char-digit->int c)))
+                    (#t 0))))))
+
+(def int-print
+     (fun (i)
+          (if (< i 0) (char-print '-'))
+          (rec loop ((i (if (<= i 0) i (- i))))
+               (if (<= i -10) (loop (/t i 10)))
+               (char-print (int->char-digit (- (%t i 10)))))))
+
+(def int->char
+     (fun (i)
+          (@int->char i)))

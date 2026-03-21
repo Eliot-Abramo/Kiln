@@ -1,0 +1,9 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @int->char primitive
+
+(@byte-write 66)
+
+(@byte-write (if (@= (@int->char 65) 'A') 65 63))   ;A
+(@byte-write (if (@= (@int->char 8364) '€') 66 63)) ;B
+

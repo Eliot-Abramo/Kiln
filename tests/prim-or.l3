@@ -1,0 +1,12 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @or primitive
+
+(@byte-write 69)
+
+(@byte-write (@or 0 65))                     ;A
+(@byte-write (@or 66 0))                     ;B
+(@byte-write (@or 66 1))                     ;C
+(@byte-write (if (@= (@or -1 68) -1) 68 63)) ;D
+(@byte-write (@or 68 65))                    ;E
+

@@ -1,0 +1,221 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Build and display random maze, using Kruskal's spanning-tree algorithm.
+;; See https://en.wikipedia.org/wiki/Kruskal's_algorithm
+
+;; Uses Unicode's box-drawing characters for display.
+
+;; Cells
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Maze cells are identified by their row and column indices in the
+;; maze. Rows and columns are numbered from 0, the origin being the
+;; top-left cell, as illustrated below:
+;;
+;;   |-------+-------+-------+-----|
+;;   | (0,0) | (0,1) | (0,2) | ... |
+;;   |-------+-------+-------+-----|
+;;   | (1,0) | (1,1) | (1,2) | ... |
+;;   |-------+-------+-------+-----|
+;;   | ...   |       |       |     |
+;;
+;; The two indices are represented as 15-bits (unsigned) integers,
+;; packed in a single 30-bits integer. The row index is put in the
+;; high-order bits, the column index in the low-order bits.
+
+(def cell-make
+     (fun (r c)
+          (int-bitwise-or (int-shift-left r 15)
+                          c)))
+
+(def cell-row
+     (fun (i)
+          (int-shift-right i 15)))
+
+(def cell-column
+     (fun (i)
+          (int-bitwise-and i #x7FFF)))
+
+(def cell= =)
+(def cell< <)
+
+;; Return true iff the cell is an exterior cell (i.e. it is surrounded
+;; by less than eight neighboring cells).
+(def cell-exterior?
+     (fun (cell rows columns)
+          (let ((r (cell-row cell))
+                (c (cell-column cell)))
+            (or (= 0 r) (= (- rows 1) r)
+                (= 0 c) (= (- columns 1) c)))))
+
+(def cell-interior?
+     (fun (cell rows columns)
+          (not (cell-exterior? cell rows columns))))
+
+;; Walls
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Walls are represented by the two cells they separate. The two cells
+;; are stored in a pair, with the smaller one first, to ensure that
+;; each wall has a unique representation.
+
+(defrec wall-make
+  (fun (c1 c2)
+       ;; (require (cell-index-valid? c1))
+       ;; (require (cell-index-valid? c2))
+       (if (cell< c1 c2)
+           (pair-make c1 c2)
+           (wall-make c2 c1))))
+
+(def wall-cell-1 pair-fst)
+(def wall-cell-2 pair-snd)
+
+(def wall= (pair-derive= cell= cell=))
+(def wall< (pair-derive< cell< cell<))
+
+;; Maze
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def maze-make
+     (fun (rows columns walls)
+          (let ((m (vector-make 3)))
+            (vector-set! m 0 rows)
+            (vector-set! m 1 columns)
+            (vector-set! m 2 walls)
+            m)))
+
+(def maze-rows
+     (fun (maze) (vector-get maze 0)))
+
+(def maze-columns
+     (fun (maze) (vector-get maze 1)))
+
+(def maze-walls
+     (fun (maze) (vector-get maze 2)))
+
+;; Maze building
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Return the list of all walls for a maze with the given number of
+;; [rows] and [columns]. Notice that only walls separating two cells
+;; of the maze are returned (e.g. those on the outside, separating
+;; cells with the surroundings of the maze, are not returned as they
+;; cannot be represented).
+(def all-walls
+     (fun (rows columns)
+          (let ((last-row (- rows 1))
+                (last-column (- columns 1)))
+            (rec loop ((r 0) (c 0) (walls list-empty))
+                 (cond ((= r last-row)
+                        walls)
+                       ((= c last-column)
+                        (loop (+ r 1) 0 walls))
+                       (#t
+                        (let* ((cell (cell-make r c))
+                               (wall-E (wall-make cell (cell-make r (+ c 1))))
+                               (walls (list-prepend wall-E walls))
+                               (wall-S (wall-make cell (cell-make (+ r 1) c)))
+                               (walls (list-prepend wall-S walls)))
+                          (loop r (+ c 1) walls))))))))
+
+(def maze-build-random-connected
+     (fun (rows columns rng-seed)
+          (let* ((wall-interiority
+                  (fun (w)
+                       (let ((c1 (wall-cell-1 w))
+                             (c2 (wall-cell-2 w)))
+                         (+ (if (cell-interior? c1 rows columns) 1 0)
+                            (if (cell-interior? c2 rows columns) 1 0)))))
+                 (wall-interior? (fun (w) (= (wall-interiority w) 2)))
+                 (wall-exterior? (fun (w) (= (wall-interiority w) 0)))
+                 (icell-index (fun (cell)
+                                   (let ((r (cell-row cell))
+                                         (c (cell-column cell)))
+                                     (+ (* (- columns 2) (- r 1))
+                                        (- c 1)))))
+                 (icells-count (* (- rows 1) (- columns 1))))
+
+            (let* ((non-ext-walls (list-filter (fun (w)
+                                                    (not (wall-exterior? w)))
+                                               (all-walls rows columns)))
+                   (int/bnd-walls (list-partition wall-interior? non-ext-walls))
+                   (int-walls (list->vector (pair-fst int/bnd-walls))))
+              (vector-shuffle! int-walls rng-seed)
+              (let* ((icells-sets (vector-tabulate icells-count
+                                                   (fun (_) (diset-make))))
+                     (kept-walls
+                      (vector-fold-left
+                       (fun (ws w)
+                            (let* ((c1 (wall-cell-1 w))
+                                   (e1 (vector-get icells-sets
+                                                   (icell-index c1)))
+                                   (c2 (wall-cell-2 w))
+                                   (e2 (vector-get icells-sets
+                                                   (icell-index c2))))
+                              (if (diset-same? e1 e2)
+                                  (list-prepend w ws)
+                                  (begin
+                                    (diset-merge! e1 e2)
+                                    ws))))
+                       list-empty
+                       int-walls)))
+                (maze-make rows
+                           columns
+                           (list-append (pair-snd int/bnd-walls)
+                                        kept-walls)))))))
+
+
+;; Maze printing
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def char-for-walls
+     (let ((wall-chars " ╵╶└╷│┌├╴┘─┴┐┤┬┼"))
+       (fun (n e s w)
+            (string-get wall-chars
+                        (+ (if n #b0001 0)
+                           (if e #b0010 0)
+                           (if s #b0100 0)
+                           (if w #b1000 0))))))
+
+(def maze-print
+     (fun (maze)
+          (let ((last-row (- (maze-rows maze) 1))
+                (last-column (- (maze-columns maze) 1))
+                (has-wall?
+                 (let ((sorted-walls (begin
+                                       (let ((ws (list->vector
+                                                  (maze-walls maze))))
+                                         (vector-sort! ws wall<)
+                                         ws))))
+                   (fun (c1 c2)
+                        (let ((w (wall-make c1 c2)))
+                          (>= (vector-binary-search sorted-walls w wall<)
+                              0))))))
+            (rec loop ((r 0) (c 0))
+                 (cond ((= r last-row)
+                        #u)
+                       ((= c last-column)
+                        (newline-print)
+                        (loop (+ r 1) 0))
+                       (#t
+                        (let ((c-tl (cell-make r c))
+                              (c-tr (cell-make r (+ c 1)))
+                              (c-bl (cell-make (+ r 1) c))
+                              (c-br (cell-make (+ r 1) (+ c 1))))
+                          (let ((w-n (has-wall? c-tl c-tr))
+                                (w-e (has-wall? c-tr c-br))
+                                (w-s (has-wall? c-br c-bl))
+                                (w-w (has-wall? c-bl c-tl)))
+                            (char-print (char-for-walls w-n w-e w-s w-w))
+                            (loop r (+ c 1))))))))))
+
+(def int-read/prompt
+     (fun (prompt)
+          (string-print prompt)
+          (int-read)))
+
+(let* ((columns (int-read/prompt " Maze width: "))
+       (rows (int-read/prompt    "Maze height: "))
+       (seed (int-read/prompt    "Random seed: ")))
+  (maze-print
+   (maze-build-random-connected rows columns seed)))

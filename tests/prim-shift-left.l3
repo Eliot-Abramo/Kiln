@@ -1,0 +1,9 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @shift-left primitive
+
+(@byte-write 67)
+
+(@byte-write (@shift-left 65 0))                              ;A
+(@byte-write (@shift-left 33 1))                              ;B
+(@byte-write (if (@= (@shift-left #x20000000 2) 0) 67 63))    ;C

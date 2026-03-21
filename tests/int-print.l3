@@ -1,0 +1,12 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+(int-print 2018)
+(@byte-write 10)                        ;newline
+(int-print -2018)
+(@byte-write 10)                        ;newline
+(int-print 0)
+(@byte-write 10)                        ;newline
+(int-print 1073741823)
+(@byte-write 10)                        ;newline
+(int-print -1073741824)
+(@byte-write 10)                        ;newline

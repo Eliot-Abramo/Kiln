@@ -1,0 +1,105 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; Expression evaluator program.
+
+(def space-print (fun () (char-print ' ')))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; List utilities
+
+;; Return first element of list [l].
+(def first
+  (fun (l) (list-head l)))
+;; Return second element of list [l].
+(def second
+  (fun (l)
+    (first (list-tail l))))
+;; Return third element of list [l].
+(def third
+  (fun (l)
+    (second (list-tail l))))
+
+;; Return the pair (key value) of the association-list [l] with key
+;; [k]. Produce an error if no such pair is found.
+(defrec assoc
+  (fun (k l)
+    (let ((h (list-head l)))
+      (if (= (list-head h) k)
+          h
+          (assoc k (list-tail l))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Handling of expressions. Expressions are specified by the following
+;; grammar:
+;; e ::=
+;;   (<op> <e> <e>)  where op in { + - * / }
+;; | (v . <character>)
+;; | (c . <number>)
+
+;; Test whether the argument is an operator.
+(def operator?
+  (fun (c)
+    (or (= c '+')
+        (= c '-')
+        (= c '*')
+        (= c '/'))))
+
+;; Print an expression (in Scheme-like format)
+(defrec print-expr
+  (fun (e)
+    (let ((tag (first e)))
+      (if (operator? tag)
+          (begin
+            (char-print '(')
+            (char-print tag)
+            (space-print)
+            (print-expr (second e))
+            (space-print)
+            (print-expr (third e))
+            (char-print ')'))
+          (if (= 'v' tag)
+              (char-print (list-tail e))
+              (int-print (list-tail e)))))))
+
+(def const (fun (c) (list-prepend 'c' c)))
+(def var (fun (v) (list-prepend 'v' v)))
+
+;; (+ x y)
+(def expr-1
+  (list-make '+' (var 'x') (var 'y')))
+
+;; (* x x)
+(def expr-2
+  (list-make '*' (var 'x') (var 'x')))
+
+;; (- (* x x) (+ x y))
+(def expr-3
+  (list-make '-' expr-2 expr-1))
+
+;; { x => 12, y => 20 }
+(def env-1
+  (list-make (list-prepend 'x' 12) (list-prepend 'y' 20)))
+
+(defrec eval
+  (fun (e env)
+    (let ((tag (first e)))
+      (if (operator? tag)
+          (let ((o1 (eval (second e) env))
+                (o2 (eval (third e) env)))
+            (if (= tag '+')
+                (+  o1 o2)
+                (if (= tag '-')
+                    (- o1 o2)
+                    (if (= tag '*') (* o1 o2) (/t o1 o2)))))
+          (if (= tag 'v')
+              (list-tail (assoc (list-tail e) env))
+              (list-tail e))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Main program
+
+(print-expr expr-3)
+(newline-print)
+(string-print "  => ")
+(int-print (eval expr-3 env-1))         ;Should print 112
+(newline-print)

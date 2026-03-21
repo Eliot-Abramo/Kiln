@@ -1,0 +1,167 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+;; (Immutable) lists
+
+(def list?
+     (fun (o)
+          (and (@block? o)
+               (= #_list (@block-tag o)))))
+
+(def list-empty
+     (@block-alloc #_list 0))
+
+(def list-prepend
+     (fun (head tail)
+          (let ((l (@block-alloc #_list 2)))
+            (@block-set! l 0 head)
+            (@block-set! l 1 tail)
+            l)))
+
+(def list-empty? (fun (l) (= l list-empty)))
+
+(def list-make@1
+     (fun (e1)
+          (list-prepend e1 list-empty)))
+(def list-make@2
+     (fun (e1 e2)
+          (list-prepend e1 (list-make e2))))
+(def list-make@3
+     (fun (e1 e2 e3)
+          (list-prepend e1 (list-make e2 e3))))
+(def list-make@4
+     (fun (e1 e2 e3 e4)
+          (list-prepend e1 (list-make e2 e3 e4))))
+(def list-make@5
+     (fun (e1 e2 e3 e4 e5)
+          (list-prepend e1 (list-make e2 e3 e4 e5))))
+(def list-make@6
+     (fun (e1 e2 e3 e4 e5 e6)
+          (list-prepend e1 (list-make e2 e3 e4 e5 e6))))
+(def list-make@7
+     (fun (e1 e2 e3 e4 e5 e6 e7)
+          (list-prepend e1 (list-make e2 e3 e4 e5 e6 e7))))
+(def list-make@8
+     (fun (e1 e2 e3 e4 e5 e6 e7 e8)
+          (list-prepend e1 (list-make e2 e3 e4 e5 e6 e7 e8))))
+(def list-make@9
+     (fun (e1 e2 e3 e4 e5 e6 e7 e8 e9)
+          (list-prepend e1 (list-make e2 e3 e4 e5 e6 e7 e8 e9))))
+(def list-make@10
+     (fun (e1 e2 e3 e4 e5 e6 e7 e8 e9 e10)
+          (list-prepend e1 (list-make e2 e3 e4 e5 e6 e7 e8 e9 e10))))
+
+(defrec list-tabulate
+  (fun (n f)
+       (rec loop ((i n) (l list-empty))
+            (if (= i 0)
+                l
+                (loop (- i 1) (list-prepend (f (- i 1)) l))))))
+
+(def list-head
+     (fun (l)
+          (@block-get l 0)))
+(def list-tail
+     (fun (l)
+          (@block-get l 1)))
+
+(defrec list-length
+  (fun (l)
+       (if (list-empty? l) 0 (+ 1 (list-length (list-tail l))))))
+
+(def list-for-each
+     (fun (f l)
+          (rec loop ((l l))
+               (if (not (list-empty? l))
+                   (begin
+                     (f (list-head l))
+                     (loop (list-tail l)))))))
+
+(def list-map
+     (fun (f l)
+          (rec loop ((l l))
+               (if (list-empty? l)
+                   l
+                   (list-prepend (f (list-head l)) (loop (list-tail l)))))))
+
+(def list-fold-left
+     (fun (f z l)
+          (rec loop ((z z) (l l))
+               (if (list-empty? l)
+                   z
+                   (loop (f z (list-head l)) (list-tail l))))))
+
+(def list-fold-right
+  (fun (f z l)
+       (rec loop ((z z) (l l))
+            (if (list-empty? l)
+                z
+                (f (list-head l) (loop z (list-tail l)))))))
+
+(def list-every?
+     (fun (p l)
+          (rec loop ((l l))
+               (or (list-empty? l)
+                   (and (p (list-head l))
+                        (loop (list-tail l)))))))
+
+(def list-any?
+     (fun (p l)
+          (rec loop ((l l))
+               (and (not (list-empty? l))
+                    (or (p (list-head l))
+                        (loop (list-tail l)))))))
+
+(def list-filter
+     (fun (p l)
+          (list-fold-right (fun (e r) (if (p e) (list-prepend e r) r))
+                           list-empty
+                           l)))
+
+(def list-partition
+     (fun (p l)
+          (list-fold-right
+           (fun (e y/n)
+                (if (p e)
+                    (pair-make (list-prepend e (pair-fst y/n)) (pair-snd y/n))
+                    (pair-make (pair-fst y/n) (list-prepend e (pair-snd y/n)))))
+           (pair-make list-empty list-empty)
+           l)))
+
+(def list-take
+     (fun (l n)
+          (rec loop ((l l) (n n))
+               (if (or (= 0 n) (list-empty? l))
+                   list-empty
+                   (list-prepend (list-head l) (loop (list-tail l) (- n 1)))))))
+
+(def list-drop
+     (fun (l n)
+          (rec loop ((l l) (n n))
+               (if (or (= 0 n) (list-empty? l))
+                   l
+                   (loop (list-tail l) (- n 1))))))
+
+(def list-nth
+     (fun (l n)
+          (list-head (list-drop l n))))
+
+(def list-reverse
+  (fun (l)
+       (list-fold-left (fun (t h) (list-prepend h t)) list-empty l)))
+
+(def list-append
+     (fun (l1 l2)
+          (rec loop ((l1 l1) (l2 l2))
+               (cond ((list-empty? l1) l2)
+                     ((list-empty? l2) l1)
+                     (#t (list-prepend (list-head l1)
+                                       (loop (list-tail l1) l2)))))))
+
+(def list-zip
+     (fun (l1 l2)
+          (rec loop ((l1 l1) (l2 l2))
+               (if (or (list-empty? l1) (list-empty? l2))
+                   list-empty
+                   (list-prepend
+                    (pair-make (list-head l1) (list-head l2))
+                    (loop (list-tail l1) (list-tail l2)))))))

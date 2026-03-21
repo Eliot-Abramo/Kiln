@@ -1,0 +1,189 @@
+;; In Emacs, open this file in -*- Scheme -*- mode.
+
+(defrec print-n-char
+  (fun (n c)
+       (if (> n 0)
+           (begin
+             (char-print c)
+             (print-n-char (- n 1) c)))))
+
+(defrec contains
+  (fun (l elem)
+       (and (not (list-empty? l))
+            (or (= (list-head l) elem)
+                (contains (list-tail l) elem)))))
+
+(defrec shuffle
+  (fun (l seed)
+       (let ((v (list->vector l)))
+         (vector-shuffle! v seed)
+         (vector->list v))))
+
+;; Cells
+
+(def cell
+     (fun (r c s)
+          (+ (* r s) c)))
+
+(def atE
+     (fun (c s)
+          (+ c 1)))
+
+(def atW
+     (fun (c s)
+          (- c 1)))
+
+(def atN
+     (fun (c s)
+          (- c s)))
+
+(def atS
+     (fun (c s)
+          (+ c s)))
+
+;; Walls
+;; Represented as a pair of 15-bits integers (cell indices), packed in
+;; a single one.
+
+(def wall-make
+     (fun (c1 c2)
+          (int-bitwise-or (int-shift-left c1 15) c2)))
+
+(def wall-cell-1
+     (fun (w)
+          (int-shift-right w 15)))
+
+(def wall-cell-2
+     (fun (w)
+          (int-bitwise-and w #x7FFF)))
+
+(def wall-up?
+     (fun (c1 c2 w)
+          (contains w (wall-make c1 c2))))
+
+
+;; Create a maze that has walls everywhere
+(defrec completeMaze-acc
+  (fun (r c s acc)
+       (if (< r s)
+           (if (< c s)
+               (let* ((rc (cell r c s))
+                      (res1 (if (< c (- s 1))
+                                (list-prepend (wall-make (cell r c s) (atE rc s)) acc)
+                                acc))
+                      (res2 (if (< r (- s 1))
+                                (list-prepend (wall-make (cell r c s) (atS rc s)) res1)
+                                res1)))
+                 (completeMaze-acc r (+ c 1) s res2))
+               (completeMaze-acc (+ r 1) 0 s acc))
+           acc)))
+
+(def completeMaze
+     (fun (s)
+          (completeMaze-acc 0 0 s list-empty)))
+
+;; Create a list of singleton lists for each cell of the maze
+(defrec fullyDisconnectedSets-acc
+  (fun (r c s acc)
+       (if (< r s)
+           (if (< c s)
+               (let ((res (list-prepend (list-make (cell r c s)) acc)))
+                 (fullyDisconnectedSets-acc r (+ c 1) s res))
+               (fullyDisconnectedSets-acc (+ r 1) 0 s acc))
+           acc)))
+
+(def fullyDisconnectedSets
+     (fun (s)
+          (fullyDisconnectedSets-acc 0 0 s list-empty)))
+
+(defrec connected
+  (fun (sets c1 c2)
+       (and (not (= sets list-empty))
+            (let ((set (list-head sets)))
+              (or (and (contains set c1)
+                       (contains set c2))
+                  (connected (list-tail sets) c1 c2))))))
+
+;; return the first element that satisfies p
+(def find
+     (fun (p l)
+          (let ((res (list-filter p l)))
+            (if (list-empty? res)
+                res
+                (list-head res)))))
+
+(def connect
+     (fun (sets c1 c2)
+          (let ((setOfC1 (find (fun (e) (contains e c1)) sets))
+                (setOfC2 (find (fun (e) (contains e c2)) sets)))
+            (list-prepend (list-append setOfC1 setOfC2)
+                          (list-filter (fun (e)
+                                            (and (not (contains e c1))
+                                                 (not (contains e c2))))
+                                       sets)))))
+
+;; execute body for each int between from and to
+(defrec for
+  (fun (from to body)
+       (if (< from to)
+           (begin
+             (body from)
+             (for (+ from 1) to body))
+           0)))
+
+(def print-maze
+     (fun (s w)
+          (let ((space ' ')
+                (wall 'X'))
+            (print-n-char (+ (* s 2) 1) wall)
+            (newline-print)
+            (for 0 s
+                 (fun (r)
+                      (char-print wall)
+                      (for 0 s
+                           (fun (c)
+                                (char-print space)
+                                (if (< c (- s 1))
+                                    (let ((rc (cell r c s)))
+                                      (char-print (if (wall-up? rc (atE rc s) w) wall space)))
+                                    0)))
+                      (char-print wall)
+                      (newline-print)
+                      (if (< r (- s 1))
+                          (begin
+                            (char-print wall)
+                            (for 0 s
+                                 (fun (c)
+                                      (let ((rc (cell r c s)))
+                                        (char-print (if (wall-up? rc (atS rc s) w) wall space))
+                                        (if (< c (- s 1))
+                                            (char-print wall)
+                                            0))))
+                            (char-print wall)
+                            (newline-print))
+                          0)))
+            (print-n-char (+ (* s 2) 1) wall)
+            (newline-print))))
+
+(defrec random-maze-acc
+  (fun (m c acc)
+       (if (list-empty? m)
+           acc
+           (let ((w (list-head m)))
+             (if (connected c (wall-cell-1 w) (wall-cell-2 w))
+                 (random-maze-acc (list-tail m) c (list-prepend w acc))
+                 (random-maze-acc (list-tail m) (connect c (wall-cell-1 w) (wall-cell-2 w)) acc))))))
+
+
+(def random-maze
+     (fun (s seed)
+          (let ((m (shuffle (completeMaze s) seed))
+                (c (fullyDisconnectedSets s)))
+            (random-maze-acc m c list-empty))))
+
+
+(string-print "Size: ") ; T
+(let ((size (int-read)))
+  (string-print "Seed: ") ; G
+  (let ((seed (int-read)))
+    (print-maze size (random-maze size seed))))

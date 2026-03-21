@@ -1,0 +1,15 @@
+;; In Emacs, open this file in -*- Scheme -*- mode
+
+;; Test the @block? primitive
+
+(@byte-write 72)
+
+(@byte-write (if (@block? 1) 63 65))    ;A
+(@byte-write (if (@block? #t) 63 66))   ;B
+(@byte-write (if (@block? #f) 63 67))   ;C
+(@byte-write (if (@block? #u) 63 68))   ;D
+(@byte-write (if (@block? 'A') 63 69))  ;E
+
+(@byte-write (if (@block? (@block-alloc #_- 0)) 70 63)) ;F
+(@byte-write (if (@block? "") 71 63))                 ;G
+(@byte-write (if (@block? (fun () 1)) 72 63))         ;H
