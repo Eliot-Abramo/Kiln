@@ -70,21 +70,10 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
         LetP(x, p, as, c(x))
       }
 
-    case CL3Tree.Prim(p: L3TestPrimitive, args) =>
-      val k = Symbol.fresh("c")
-      val x = Symbol.fresh("r")
-      val kt = Symbol.fresh("ct")
-      val kf = Symbol.fresh("ce")
-      LetC(
-        Seq(
-          Cnt(k, Seq(x), c(x)),
-          Cnt(kt, Seq(), AppC(k, Seq(BooleanLit(true)))),
-          Cnt(kf, Seq(), AppC(k, Seq(BooleanLit(false))))
-        ),
-        nonTailSeq(args) { as =>
-          If(p, as, kt, kf)
-        }
-      )
+    case CL3Tree.Prim(_: L3TestPrimitive, _) =>
+      given Position = tree.pos
+      nonTail(CL3Tree.If(tree, CL3Tree.Lit(BooleanLit(true)),
+                                CL3Tree.Lit(BooleanLit(false))))(c)
 
     case CL3Tree.Halt(arg) =>
       nonTail(arg) { a => Halt(a) }
@@ -142,18 +131,10 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
         LetP(x, p, as, AppC(c, Seq(x)))
       }
 
-    case CL3Tree.Prim(p: L3TestPrimitive, args) =>
-      val kt = Symbol.fresh("ct")
-      val kf = Symbol.fresh("ce")
-      LetC(
-        Seq(
-          Cnt(kt, Seq(), AppC(c, Seq(BooleanLit(true)))),
-          Cnt(kf, Seq(), AppC(c, Seq(BooleanLit(false))))
-        ),
-        nonTailSeq(args) { as =>
-          If(p, as, kt, kf)
-        }
-      )
+    case CL3Tree.Prim(_: L3TestPrimitive, _) =>
+      given Position = tree.pos
+      tail(CL3Tree.If(tree, CL3Tree.Lit(BooleanLit(true)),
+                             CL3Tree.Lit(BooleanLit(false))), c)
 
     case CL3Tree.Halt(arg) =>
       nonTail(arg) { a => Halt(a) }
