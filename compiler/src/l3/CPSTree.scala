@@ -41,6 +41,11 @@ trait HighValues extends CPSTreeModule {
   type ValuePrimitive = L3ValuePrimitive
   type TestPrimitive = L3TestPrimitive
 }
+trait LowValues extends CPSTreeModule {
+  type Literal = Bits32
+  type ValuePrimitive = CPSValuePrimitive
+  type TestPrimitive = CPSTestPrimitive
+}
 
 trait NestedTree extends CPSTreeModule {
   type Body = Tree
@@ -52,3 +57,10 @@ trait NestedTree extends CPSTreeModule {
   * primitives are available.
   */
 object HighCPSTreeModule extends NestedTree with HighValues with SymbolicNames
+
+/**
+  * Module for "low-level" CPS trees: the only literal values are
+  * integers, and the primitives work on integers and/or pointers to
+  * heap-allocated blocks.
+  */
+object LowCPSTreeModule extends NestedTree with LowValues with SymbolicNames

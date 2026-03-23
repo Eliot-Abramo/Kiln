@@ -90,3 +90,6 @@ class CPSTreeChecker[T <: CPSTreeModule](protected val treeModule: T)
 given HighCPSTreeChecker: Checker[HighCPSTreeModule.Program] =
   new CPSTreeChecker(HighCPSTreeModule)
     with Checker[HighCPSTreeModule.Tree]
+given LowCPSTreeChecker: Checker[LowCPSTreeModule.Program] =
+  new CPSTreeChecker(LowCPSTreeModule)
+    with Checker[LowCPSTreeModule.Tree]

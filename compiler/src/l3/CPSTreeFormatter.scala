@@ -49,3 +49,6 @@ class CPSTreeFormatter[T <: CPSTreeModule](protected val treeModule: T) {
 given HighCPSTreeFormatter: Formatter[HighCPSTreeModule.Program] =
   new CPSTreeFormatter(HighCPSTreeModule)
     with Formatter[HighCPSTreeModule.Tree]
+given LowCPSTreeFormatter: Formatter[LowCPSTreeModule.Program] =
+  new CPSTreeFormatter(LowCPSTreeModule)
+    with Formatter[LowCPSTreeModule.Tree]
