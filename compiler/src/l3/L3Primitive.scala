@@ -6,10 +6,18 @@ package l3
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//defines primitive operations and classifies them as either
+//  value producing
+//  test producing
+
 sealed trait L3Primitive(val name: String, val arity: Int) {
   override def toString: String = name
 }
 
+//a value primitive is translated to LetP(name,prim,args,body)
+//arity = number of arguments a primitive must take, mental check to validate
+//use of primitives. i.e. IntAdd has a=2 -> (@ + a b), 3 arguments
+//                        ByteRead has a=0 -> (@ byte-read) 1 argument
 enum L3ValuePrimitive(n: String, a: Int) extends L3Primitive(n, a) {
   case BlockAlloc extends L3ValuePrimitive("block-alloc", 2)
   case BlockTag extends L3ValuePrimitive("block-tag", 1)
@@ -35,9 +43,12 @@ enum L3ValuePrimitive(n: String, a: Int) extends L3Primitive(n, a) {
   case IntToChar extends L3ValuePrimitive("int->char", 1)
   case CharToInt extends L3ValuePrimitive("char->int", 1)
 
+  //only exist in CPS-level evaluation, lets you bind an atom to a fresh 
+  //name: LetP(x, Id, Seq(atom), body)
   case Id extends L3ValuePrimitive("id", 1)
 }
 
+//a test primitive is used by CPS If(cond,args,thenC, elseC)
 enum L3TestPrimitive(n: String, a: Int) extends L3Primitive(n, a) {
   case BlockP extends L3TestPrimitive("block?", 1)
   case IntP extends L3TestPrimitive("int?", 1)

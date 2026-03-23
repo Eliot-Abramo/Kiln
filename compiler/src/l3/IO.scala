@@ -6,6 +6,7 @@ package l3
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//runtime byte I/O helpers
 object IO {
   def readByte(): Int =
     System.in.read()

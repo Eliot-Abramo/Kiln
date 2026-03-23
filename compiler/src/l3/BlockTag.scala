@@ -8,6 +8,8 @@ import scala.collection.mutable.Map as MutableMap
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//Maps symbolic block tag names to numeric tag codes
+
 object BlockTag {
   val FreeBlock = 0x00
   val Function = 0x01
@@ -21,6 +23,8 @@ object BlockTag {
     "_register_frame" -> RegisterFrame
   )
 
+  //what allows me to make new tags, if tag unknown, creates unique
+  //8 bit address for tag
   def resolve(tagName: String): Int = {
     if (!tagValue.contains(tagName)) {
       val usedTags = tagValue.values.toSet

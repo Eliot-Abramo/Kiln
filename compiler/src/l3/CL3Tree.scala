@@ -1,11 +1,14 @@
 package l3
 
 /**
-  * A module for CL₃ trees.
+  * A module for CL₃ trees. 
   *
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//define the CL3 AST in a generic way over the kind of names and primitives stored
+
+//generic trait
 trait CL3TreeModule {
   type Name
   type Primitive
@@ -22,6 +25,7 @@ trait CL3TreeModule {
   }
   export Tree.*
 
+  //recursive function binding elements, used in LetRec
   case class Fun(name: Name, args: Seq[Name], body: Tree)
                 (using val pos: Position)
 }

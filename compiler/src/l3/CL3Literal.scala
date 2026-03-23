@@ -6,6 +6,7 @@ package l3
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//Defines literal values in the CL3 and high-level CPS
 enum CL3Literal {
   override def toString: String = this match {
     case IntLit(i) => i.toString

@@ -10,7 +10,9 @@ import CL3Literal._
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//lexing + parsing + immediate desugaring of surface L3
 object L3Parser {
+  //returns a nominal CL3 tree
   def parse(programText: String,
             indexToPosition: Int => Position): Either[String, Tree] = {
     val parser = new S(indexToPosition)
@@ -51,32 +53,40 @@ object L3Parser {
         .map { Integer.parseInt(_, 2) }
         .filter { L3Int.canConvertFromIntUnsigned }
         .map { L3Int.ofIntUnsigned })
+
     private def integer16[p: P] = P(
       (prefix16 ~/ digit16.rep(1).!)
         .map { Integer.parseInt(_, 16) }
         .filter { L3Int.canConvertFromIntUnsigned }
         .map { L3Int.ofIntUnsigned })
+
     private def integer10[p: P] = P(
       (sign.? ~ digit10 ~/ digit10.rep).!
         .map { Integer.parseInt(_, 10) }
         .filter { L3Int.canConvertFromInt })
       .map(L3Int.apply)
+
     private def integer[p: P] = IP(
       (integer2 | integer10 | integer16)
         .map { v => Lit(IntLit(v)) })
+
     private def blockTag[p: P] = IP(
       ("#_" ~/ identStr.!)
         .map { n =>
           Lit(IntLit(L3Int.ofIntUnsigned(BlockTag.resolve(n)))) })
+
     private def string[p: P] = IP(
       ("\"" ~/ CharPred(c => c != '\n' && c != '"').rep.! ~ "\"")
         .map { s => sStringLit(s) })
+
     private def char[p: P] = IP(
       ("'" ~/ unicodeChar.! ~ "'")
         .map { c => Lit(CharLit(c.codePointAt(0))) })
+
     private def bool[p: P] = IP(
       StringIn("#t", "#f").!
         .map { v => Lit(BooleanLit(v == "#t")) })
+
     private def unit[p: P] = IP(
       "#u".map { _ => Lit(UnitLit) })
 

@@ -8,6 +8,7 @@ import org.typelevel.paiges.Doc
   * @author Michel Schinz <Michel.Schinz@epfl.ch>
   */
 
+//minimal abstraction build on paiges for printing stuff
 trait Formatter[-T] {
   def toDoc(value: T): Doc
 }
