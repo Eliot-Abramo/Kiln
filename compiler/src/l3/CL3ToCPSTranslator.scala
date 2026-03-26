@@ -11,12 +11,15 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
     nonTail(tree) { _ => Halt(IntLit(L3Int(0))) }
 
   private def nonTail(tree: CL3Tree)(c: Atom => Tree): Tree = tree match {
+    //ident
     case CL3Tree.Ident(name) =>
       c(name)
 
+    //literal
     case CL3Tree.Lit(value) =>
       c(value)
 
+    //let
     case CL3Tree.Let(bindings, body) =>
       def loop(bs: Seq[(Symbol, CL3Tree)]): Tree = bs match {
         case Seq() =>
@@ -29,6 +32,7 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
       }
       loop(bindings)
 
+    //letrec
     case CL3Tree.LetRec(funs, body) =>
       LetF(
         funs map { fun =>
@@ -38,6 +42,7 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
         nonTail(body)(c)
       )
 
+    //app
     case CL3Tree.App(fun, args) =>
       nonTail(fun) { f =>
         nonTailSeq(args) { as =>
@@ -50,6 +55,7 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
         }
       }
 
+    //if
     case CL3Tree.If(condE, thenE, elseE) =>
       val k = Symbol.fresh("c")
       val x = Symbol.fresh("r")
@@ -64,6 +70,7 @@ object CL3ToCPSTranslator extends (CL3Tree => Tree) {
         cond(condE, kt, kf)
       )
 
+    //primitive
     case CL3Tree.Prim(p: L3ValuePrimitive, args) =>
       nonTailSeq(args) { as =>
         val x = Symbol.fresh("v")
