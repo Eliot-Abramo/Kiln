@@ -52,3 +52,6 @@ given HighCPSTreeFormatter: Formatter[HighCPSTreeModule.Program] =
 given LowCPSTreeFormatter: Formatter[LowCPSTreeModule.Program] =
   new CPSTreeFormatter(LowCPSTreeModule)
     with Formatter[LowCPSTreeModule.Tree]
+given FlatCPSTreeFormatter: Formatter[FlatCPSTreeModule.Program] =
+  new CPSTreeFormatter(FlatCPSTreeModule)
+    with Formatter[FlatCPSTreeModule.Tree]

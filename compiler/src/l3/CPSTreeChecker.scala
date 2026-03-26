@@ -93,3 +93,6 @@ given HighCPSTreeChecker: Checker[HighCPSTreeModule.Program] =
 given LowCPSTreeChecker: Checker[LowCPSTreeModule.Program] =
   new CPSTreeChecker(LowCPSTreeModule)
     with Checker[LowCPSTreeModule.Tree]
+given FlatCPSTreeChecker: Checker[FlatCPSTreeModule.Program] =
+  new CPSTreeChecker(FlatCPSTreeModule)
+    with Checker[FlatCPSTreeModule.Tree]

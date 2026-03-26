@@ -51,6 +51,10 @@ trait NestedTree extends CPSTreeModule {
   type Body = Tree
   type Program = Tree
 }
+trait FlatTree extends CPSTreeModule {
+  type Body = LetC | LetP | AppF | AppC | If | Halt
+  type Program = LetF
+}
 
 /**
   * Module for "high-level" CPS trees: the full L3 literals and
@@ -64,3 +68,9 @@ object HighCPSTreeModule extends NestedTree with HighValues with SymbolicNames
   * heap-allocated blocks.
   */
 object LowCPSTreeModule extends NestedTree with LowValues with SymbolicNames
+
+/**
+ * Module for hoisted CPS trees: program contains exactly one `LetF`,
+ * at the root of the tree, defining all the functions of the program.
+ */
+object FlatCPSTreeModule extends FlatTree with LowValues with SymbolicNames

@@ -234,3 +234,12 @@ object LowCPSInterpreter
     case BlockV(_, id, Array(funV: FunV)) if id == l3.BlockTag.Function => funV
   }
 }
+
+class FlatCPSInterpreter(log: FlatCPSTreeModule.Tree => Unit)
+    extends LowValuesCPSInterpreter with CPSInterpreter(FlatCPSTreeModule)(log)
+    with (FlatCPSTreeModule.Program => TerminalPhaseResult) {
+
+  protected def wrapFunV(funV: FunV): Value = funV
+  protected val funVExtractor = { case funV: FunV => funV }
+}
+object FlatCPSInterpreter extends FlatCPSInterpreter(_ => ())

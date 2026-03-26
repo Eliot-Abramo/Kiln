@@ -11,7 +11,8 @@ object Main {
     val backEnd: Tree => TerminalPhaseResult = (
       CL3ToCPSTranslator
         `andThen` CPSValueRepresenter
-        `andThen` LowCPSInterpreter
+        `andThen` CPSHoister
+        `andThen` FlatCPSInterpreter
     )
 
     val basePath = Path.of(System.getProperty("user.dir"))
