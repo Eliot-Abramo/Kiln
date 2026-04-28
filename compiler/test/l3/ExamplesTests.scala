@@ -54,3 +54,7 @@ object ExamplesTests2 extends TestSuite with ExamplesTests {
 object ExamplesTests3 extends TestSuite with ExamplesTests {
   val backEnd = L3Tester.backEnd3
 }
+
+object ExamplesTests4 extends TestSuite with ExamplesTests {
+  val backEnd = L3Tester.backEnd4
+}

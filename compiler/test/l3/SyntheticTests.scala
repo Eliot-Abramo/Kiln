@@ -93,3 +93,7 @@ object SyntheticTests2 extends TestSuite with SyntheticTests {
 object SyntheticTests3 extends TestSuite with SyntheticTests {
   val backEnd = L3Tester.backEnd3
 }
+
+object SyntheticTests4 extends TestSuite with SyntheticTests {
+  val backEnd = L3Tester.backEnd4
+}

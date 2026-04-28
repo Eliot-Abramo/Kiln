@@ -10,8 +10,10 @@ object Main {
   def main(args: Array[String]): Unit = {
     val backEnd: Tree => TerminalPhaseResult = (
       CL3ToCPSTranslator
+        `andThen` HighCPSOptimizer
         `andThen` CPSValueRepresenter
         `andThen` CPSHoister
+        `andThen` FlatCPSOptimizer
         `andThen` FlatCPSInterpreter
     )
 
