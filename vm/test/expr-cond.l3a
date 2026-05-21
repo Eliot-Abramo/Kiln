@@ -1,0 +1,51 @@
+c0000003 | 0000: FRAME(3)
+a0008900 | 0004: LDLO(R0,137)
+30e10001 | 0008: LSR(R1,R0,C1)
+f0000101 | 000c: BWRI(R1)
+a0007f01 | 0010: LDLO(R1,127)
+682aeafa | 0014: JNE(C26,C10,42)      [target address: 00bc]
+6826eafa | 0018: JNE(C26,C10,38)      [target address: 00b0]
+b000e202 | 001c: MOVE(R2,C2)
+6821eaea | 0020: JNE(C10,C10,33)      [target address: 00a4]
+681deaea | 0024: JNE(C10,C10,29)      [target address: 0098]
+6818eafa | 0028: JNE(C26,C10,24)      [target address: 0088]
+b000e202 | 002c: MOVE(R2,C2)
+6815eaea | 0030: JNE(C10,C10,21)      [target address: 0084]
+a0008702 | 0034: LDLO(R2,135)
+6811ea02 | 0038: JNE(R2,C10,17)       [target address: 007c]
+680feafa | 003c: JNE(C26,C10,15)      [target address: 0078]
+b000e201 | 0040: MOVE(R1,C2)
+30e10101 | 0044: LSR(R1,R1,C1)
+f0000101 | 0048: BWRI(R1)
+6809eaea | 004c: JNE(C10,C10,9)       [target address: 0070]
+b000e201 | 0050: MOVE(R1,C2)
+680501e2 | 0054: JNE(C2,R1,5)         [target address: 0068]
+30e10000 | 0058: LSR(R0,R0,C1)
+f0000100 | 005c: BWRI(R0)
+30e1e100 | 0060: LSR(R0,C1,C1)
+98000000 | 0064: HALT(R0)
+b000e200 | 0068: MOVE(R0,C2)
+7ffffffd | 006c: JUMP_D(-3)           [target address: 0060]
+b000f901 | 0070: MOVE(R1,C25)
+7ffffff8 | 0074: JUMP_D(-8)           [target address: 0054]
+7ffffff3 | 0078: JUMP_D(-13)          [target address: 0044]
+b0000201 | 007c: MOVE(R1,R2)
+7ffffff1 | 0080: JUMP_D(-15)          [target address: 0044]
+7ffffff0 | 0084: JUMP_D(-16)          [target address: 0044]
+a0008502 | 0088: LDLO(R2,133)
+30e10202 | 008c: LSR(R2,R2,C1)
+f0000102 | 0090: BWRI(R2)
+7fffffe7 | 0094: JUMP_D(-25)          [target address: 0030]
+30e10102 | 0098: LSR(R2,R1,C1)
+f0000102 | 009c: BWRI(R2)
+7fffffe4 | 00a0: JUMP_D(-28)          [target address: 0030]
+30e10102 | 00a4: LSR(R2,R1,C1)
+f0000102 | 00a8: BWRI(R2)
+7fffffe1 | 00ac: JUMP_D(-31)          [target address: 0030]
+30e10102 | 00b0: LSR(R2,R1,C1)
+f0000102 | 00b4: BWRI(R2)
+7fffffda | 00b8: JUMP_D(-38)          [target address: 0020]
+a0008302 | 00bc: LDLO(R2,131)
+30e10202 | 00c0: LSR(R2,R2,C1)
+f0000102 | 00c4: BWRI(R2)
+7fffffd6 | 00c8: JUMP_D(-42)          [target address: 0020]

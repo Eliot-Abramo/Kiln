@@ -64,4 +64,28 @@ object L3Tester {
       andThen FlatCPSOptimizer
       andThen FlatCPSInterpreter
   )
+
+  val backEnd5 = (
+    CL3ToCPSTranslator
+      andThen CPSValueRepresenter
+      andThen CPSHoister
+      andThen CPSConstantNamer
+      andThen CPSRegisterAllocator
+      andThen CPSToASMTranslator
+      andThen ASMLabelResolver
+      andThen ASMInterpreter
+  )
+
+  val backEnd6 = (
+    CL3ToCPSTranslator
+      andThen HighCPSOptimizer
+      andThen CPSValueRepresenter
+      andThen CPSHoister
+      andThen FlatCPSOptimizer
+      andThen CPSConstantNamer
+      andThen CPSRegisterAllocator
+      andThen CPSToASMTranslator
+      andThen ASMLabelResolver
+      andThen ASMInterpreter
+  )
 }

@@ -1,0 +1,56 @@
+c0000003 | 0000: FRAME(3)
+a0008d00 | 0004: LDLO(R0,141)
+30e10001 | 0008: LSR(R1,R0,C1)
+f0000101 | 000c: BWRI(R1)
+a0008301 | 0010: LDLO(R1,131)
+30e10101 | 0014: LSR(R1,R1,C1)
+f0000101 | 0018: BWRI(R1)
+6830ea01 | 001c: JNE(R1,C10,48)       [target address: 00dc]
+b000e201 | 0020: MOVE(R1,C2)
+a0000a01 | 0024: LDLO(R1,10)
+682cea01 | 0028: JNE(R1,C10,44)       [target address: 00d8]
+a0008501 | 002c: LDLO(R1,133)
+30e10101 | 0030: LSR(R1,R1,C1)
+f0000101 | 0034: BWRI(R1)
+a0001a01 | 0038: LDLO(R1,26)
+a0007f02 | 003c: LDLO(R2,127)
+6825ea01 | 0040: JNE(R1,C10,37)       [target address: 00d4]
+30e10201 | 0044: LSR(R1,R2,C1)
+f0000101 | 0048: BWRI(R1)
+a0008701 | 004c: LDLO(R1,135)
+30e10101 | 0050: LSR(R1,R1,C1)
+f0000101 | 0054: BWRI(R1)
+681eea01 | 0058: JNE(R1,C10,30)       [target address: 00d0]
+a0001a01 | 005c: LDLO(R1,26)
+681bea01 | 0060: JNE(R1,C10,27)       [target address: 00cc]
+30e10201 | 0064: LSR(R1,R2,C1)
+f0000101 | 0068: BWRI(R1)
+a0008901 | 006c: LDLO(R1,137)
+6816ea01 | 0070: JNE(R1,C10,22)       [target address: 00c8]
+b0000201 | 0074: MOVE(R1,R2)
+30e10101 | 0078: LSR(R1,R1,C1)
+f0000101 | 007c: BWRI(R1)
+a0000a01 | 0080: LDLO(R1,10)
+6810ea01 | 0084: JNE(R1,C10,16)       [target address: 00c4]
+a0008b01 | 0088: LDLO(R1,139)
+30e10101 | 008c: LSR(R1,R1,C1)
+f0000101 | 0090: BWRI(R1)
+a0000a01 | 0094: LDLO(R1,10)
+6809ea01 | 0098: JNE(R1,C10,9)        [target address: 00bc]
+a0000a01 | 009c: LDLO(R1,10)
+6805ea01 | 00a0: JNE(R1,C10,5)        [target address: 00b4]
+30e10000 | 00a4: LSR(R0,R0,C1)
+f0000100 | 00a8: BWRI(R0)
+30e1e100 | 00ac: LSR(R0,C1,C1)
+98000000 | 00b0: HALT(R0)
+b0000100 | 00b4: MOVE(R0,R1)
+7ffffffb | 00b8: JUMP_D(-5)           [target address: 00a4]
+b0000100 | 00bc: MOVE(R0,R1)
+7ffffff9 | 00c0: JUMP_D(-7)           [target address: 00a4]
+7ffffff2 | 00c4: JUMP_D(-14)          [target address: 008c]
+7fffffec | 00c8: JUMP_D(-20)          [target address: 0078]
+7fffffe8 | 00cc: JUMP_D(-24)          [target address: 006c]
+7fffffe7 | 00d0: JUMP_D(-25)          [target address: 006c]
+7fffffde | 00d4: JUMP_D(-34)          [target address: 004c]
+7fffffd8 | 00d8: JUMP_D(-40)          [target address: 0038]
+7fffffd2 | 00dc: JUMP_D(-46)          [target address: 0024]

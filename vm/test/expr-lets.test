@@ -1,0 +1,3 @@
+$ VM ./expr-lets.l3a; echo
+>
+EABCDE

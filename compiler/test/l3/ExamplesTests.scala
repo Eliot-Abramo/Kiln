@@ -58,3 +58,9 @@ object ExamplesTests3 extends TestSuite with ExamplesTests {
 object ExamplesTests4 extends TestSuite with ExamplesTests {
   val backEnd = L3Tester.backEnd4
 }
+
+// No ExamplesTests5: examples don't compile successfully w/o optimization
+
+object ExamplesTests6 extends TestSuite with ExamplesTests {
+  val backEnd = L3Tester.backEnd6
+}

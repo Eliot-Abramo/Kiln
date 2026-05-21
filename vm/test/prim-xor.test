@@ -1,0 +1,3 @@
+$ VM ./prim-xor.l3a; echo
+>
+FABCDEF

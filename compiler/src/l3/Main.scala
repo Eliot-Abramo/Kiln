@@ -10,12 +10,32 @@ object Main {
   def main(args: Array[String]): Unit = {
     val stats = new Statistics()
     val backEnd: Tree => TerminalPhaseResult = (
+      // CL3Interpreter
       CL3ToCPSTranslator
+        // `andThen` treePrinter("---------- After translation to CPS")
         `andThen` HighCPSOptimizer
+        // `andThen` treePrinter("---------- After high optimization")
+        // `andThen` HighCPSInterpreter
         `andThen` CPSValueRepresenter
+        // `andThen` treePrinter("---------- After value representation")
+        // `andThen` LowCPSInterpreter
         `andThen` CPSHoister
+        // `andThen` treePrinter("---------- After hoisting")
         `andThen` FlatCPSOptimizer
         `andThen` (new FlatCPSInterpreter(stats.log))
+        // `andThen` treePrinter("---------- After low optimization")
+        // `andThen` FlatCPSInterpreter
+        `andThen` CPSConstantNamer
+        // `andThen` treePrinter("---------- After constant naming")
+        `andThen` CPSRegisterAllocator
+        // `andThen` treePrinter("---------- After register allocation")
+        `andThen` CPSToASMTranslator
+        // `andThen` seqPrinter("---------- After translation to assembly")
+        `andThen` ASMLabelResolver
+        // `andThen` seqPrinter("---------- After label resolution")
+        // `andThen` ASMInterpreter
+        `andThen` ASMFileWriter(Option(System.getProperty("l3.out-asm-file"))
+                                .getOrElse("out.l3a"))
     )
 
     val basePath = Path.of(System.getProperty("user.dir"))

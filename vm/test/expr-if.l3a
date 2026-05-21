@@ -1,0 +1,55 @@
+c0000003 | 0000: FRAME(3)
+a0008f00 | 0004: LDLO(R0,143)
+30e10001 | 0008: LSR(R1,R0,C1)
+f0000101 | 000c: BWRI(R1)
+a0008301 | 0010: LDLO(R1,131)
+30e10101 | 0014: LSR(R1,R1,C1)
+f0000101 | 0018: BWRI(R1)
+682eea01 | 001c: JNE(R1,C10,46)       [target address: 00d4]
+b000e501 | 0020: MOVE(R1,C5)
+a0007f01 | 0024: LDLO(R1,127)
+6829eafa | 0028: JNE(C26,C10,41)      [target address: 00cc]
+b0000102 | 002c: MOVE(R2,R1)
+30e10202 | 0030: LSR(R2,R2,C1)
+f0000102 | 0034: BWRI(R2)
+6823eaea | 0038: JNE(C10,C10,35)      [target address: 00c4]
+a0008702 | 003c: LDLO(R2,135)
+30e10202 | 0040: LSR(R2,R2,C1)
+f0000102 | 0044: BWRI(R2)
+681beafa | 0048: JNE(C26,C10,27)      [target address: 00b4]
+30e10102 | 004c: LSR(R2,R1,C1)
+f0000102 | 0050: BWRI(R2)
+6815eaea | 0054: JNE(C10,C10,21)      [target address: 00a8]
+a0008b01 | 0058: LDLO(R1,139)
+30e10101 | 005c: LSR(R1,R1,C1)
+f0000101 | 0060: BWRI(R1)
+680feaea | 0064: JNE(C10,C10,15)      [target address: 00a0]
+b000e201 | 0068: MOVE(R1,C2)
+680b01e2 | 006c: JNE(C2,R1,11)        [target address: 0098]
+a0008d01 | 0070: LDLO(R1,141)
+30e10101 | 0074: LSR(R1,R1,C1)
+f0000101 | 0078: BWRI(R1)
+b0000001 | 007c: MOVE(R1,R0)
+30e10000 | 0080: LSR(R0,R0,C1)
+f0000100 | 0084: BWRI(R0)
+6801ea00 | 0088: JNE(R0,C10,1)        [target address: 008c]
+b000e300 | 008c: MOVE(R0,C3)
+30e1e100 | 0090: LSR(R0,C1,C1)
+98000000 | 0094: HALT(R0)
+b000e201 | 0098: MOVE(R1,C2)
+7ffffff8 | 009c: JUMP_D(-8)           [target address: 007c]
+b000ff01 | 00a0: MOVE(R1,C31)
+7ffffff2 | 00a4: JUMP_D(-14)          [target address: 006c]
+30e10101 | 00a8: LSR(R1,R1,C1)
+f0000101 | 00ac: BWRI(R1)
+7fffffed | 00b0: JUMP_D(-19)          [target address: 0064]
+a0008902 | 00b4: LDLO(R2,137)
+30e10202 | 00b8: LSR(R2,R2,C1)
+f0000102 | 00bc: BWRI(R2)
+7fffffe5 | 00c0: JUMP_D(-27)          [target address: 0054]
+b0000102 | 00c4: MOVE(R2,R1)
+7fffffde | 00c8: JUMP_D(-34)          [target address: 0040]
+a0008502 | 00cc: LDLO(R2,133)
+7fffffd8 | 00d0: JUMP_D(-40)          [target address: 0030]
+b000e301 | 00d4: MOVE(R1,C3)
+7fffffd3 | 00d8: JUMP_D(-45)          [target address: 0024]

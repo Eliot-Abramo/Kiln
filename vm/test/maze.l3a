@@ -1,0 +1,893 @@
+c000000f | 0000: FRAME(15)
+c8e1e100 | 0004: BALO(R0,C1,C1)
+a007d001 | 0008: LDLO(R1,2000)
+e8e00001 | 000c: BSET(R1,R0,C0)
+c8e1e101 | 0010: BALO(R1,C1,C1)
+a007e002 | 0014: LDLO(R2,2016)
+e8e00102 | 0018: BSET(R2,R1,C0)
+c8e0e402 | 001c: BALO(R2,C4,C0)
+c8e6e203 | 0020: BALO(R3,C2,C6)
+a0029e04 | 0024: LDLO(R4,670)
+e8e00304 | 0028: BSET(R4,R3,C0)
+a0034e05 | 002c: LDLO(R5,846)
+e8e10305 | 0030: BSET(R5,R3,C1)
+a003d605 | 0034: LDLO(R5,982)
+e8e20305 | 0038: BSET(R5,R3,C2)
+a0032e05 | 003c: LDLO(R5,814)
+e8e30305 | 0040: BSET(R5,R3,C3)
+a001d606 | 0044: LDLO(R6,470)
+e8e40306 | 0048: BSET(R6,R3,C4)
+a0010607 | 004c: LDLO(R7,262)
+e8e50307 | 0050: BSET(R7,R3,C5)
+e0e00308 | 0054: BGET(R8,R3,C0)
+b8e0e008 | 0058: ARGS(R8,C0,C0)
+88019d08 | 005c: CALL_D(R8,413)       [target address: 06d0]
+b000e308 | 0060: MOVE(R8,C3)
+594708ed | 0064: JLE(C13,R8,327)      [target address: 0580]
+30e10809 | 0068: LSR(R9,R8,C1)
+e0090309 | 006c: BGET(R9,R3,R9)
+b8e0e009 | 0070: ARGS(R9,C0,C0)
+88019709 | 0074: CALL_D(R9,407)       [target address: 06d0]
+00e20808 | 0078: ADD(R8,R8,C2)
+580708ed | 007c: JLE(C13,R8,7)        [target address: 0098]
+30e10809 | 0080: LSR(R9,R8,C1)
+e0090309 | 0084: BGET(R9,R3,R9)
+b8e0e009 | 0088: ARGS(R9,C0,C0)
+88019109 | 008c: CALL_D(R9,401)       [target address: 06d0]
+00e20808 | 0090: ADD(R8,R8,C2)
+7ffffff4 | 0094: JUMP_D(-12)          [target address: 0064]
+b000e203 | 0098: MOVE(R3,C2)
+b8e00001 | 009c: ARGS(R1,R0,C0)
+8801d403 | 00a0: CALL_D(R3,468)       [target address: 07f0]
+c8e6e208 | 00a4: BALO(R8,C2,C6)
+e8e00804 | 00a8: BSET(R4,R8,C0)
+e8e10805 | 00ac: BSET(R5,R8,C1)
+e8e20805 | 00b0: BSET(R5,R8,C2)
+a0032604 | 00b4: LDLO(R4,806)
+e8e30804 | 00b8: BSET(R4,R8,C3)
+e8e40806 | 00bc: BSET(R6,R8,C4)
+e8e50807 | 00c0: BSET(R7,R8,C5)
+e0e00804 | 00c4: BGET(R4,R8,C0)
+b8e0e004 | 00c8: ARGS(R4,C0,C0)
+88018104 | 00cc: CALL_D(R4,385)       [target address: 06d0]
+b000e304 | 00d0: MOVE(R4,C3)
+592904ed | 00d4: JLE(C13,R4,297)      [target address: 0578]
+30e10405 | 00d8: LSR(R5,R4,C1)
+e0050805 | 00dc: BGET(R5,R8,R5)
+b8e0e005 | 00e0: ARGS(R5,C0,C0)
+88017b05 | 00e4: CALL_D(R5,379)       [target address: 06d0]
+00e20404 | 00e8: ADD(R4,R4,C2)
+580704ed | 00ec: JLE(C13,R4,7)        [target address: 0108]
+30e10405 | 00f0: LSR(R5,R4,C1)
+e0050805 | 00f4: BGET(R5,R8,R5)
+b8e0e005 | 00f8: ARGS(R5,C0,C0)
+88017505 | 00fc: CALL_D(R5,373)       [target address: 06d0]
+00e20404 | 0100: ADD(R4,R4,C2)
+7ffffff4 | 0104: JUMP_D(-12)          [target address: 00d4]
+b000e204 | 0108: MOVE(R4,C2)
+b8e00001 | 010c: ARGS(R1,R0,C0)
+8801b800 | 0110: CALL_D(R0,440)       [target address: 07f0]
+b000e101 | 0114: MOVE(R1,C1)
+b000e104 | 0118: MOVE(R4,C1)
+b0000305 | 011c: MOVE(R5,R3)
+b0000206 | 0120: MOVE(R6,R2)
+58270105 | 0124: JLE(R5,R1,39)        [target address: 01c0]
+58230405 | 0128: JLE(R5,R4,35)        [target address: 01b4]
+48e10107 | 012c: XOR(R7,R1,C1)
+30e10508 | 0130: LSR(R8,R5,C1)
+10080707 | 0134: MUL(R7,R7,R8)
+40e10707 | 0138: OR(R7,R7,C1)
+48e10408 | 013c: XOR(R8,R4,C1)
+00080707 | 0140: ADD(R7,R7,R8)
+08e20508 | 0144: SUB(R8,R5,C2)
+581a0408 | 0148: JLE(R8,R4,26)        [target address: 01b0]
+00e20708 | 014c: ADD(R8,R7,C2)
+48e10709 | 0150: XOR(R9,R7,C1)
+28ef0909 | 0154: LSL(R9,R9,C15)
+40e10909 | 0158: OR(R9,R9,C1)
+40080908 | 015c: OR(R8,R9,R8)
+c8e2e409 | 0160: BALO(R9,C4,C2)
+e8e00908 | 0164: BSET(R8,R9,C0)
+e8e10906 | 0168: BSET(R6,R9,C1)
+b0000906 | 016c: MOVE(R6,R9)
+08e20508 | 0170: SUB(R8,R5,C2)
+580d0108 | 0174: JLE(R8,R1,13)        [target address: 01a8]
+48e10508 | 0178: XOR(R8,R5,C1)
+00080708 | 017c: ADD(R8,R7,R8)
+48e10707 | 0180: XOR(R7,R7,C1)
+28ef0707 | 0184: LSL(R7,R7,C15)
+40e10707 | 0188: OR(R7,R7,C1)
+40080707 | 018c: OR(R7,R7,R8)
+c8e2e408 | 0190: BALO(R8,C4,C2)
+e8e00807 | 0194: BSET(R7,R8,C0)
+e8e10806 | 0198: BSET(R6,R8,C1)
+00e20404 | 019c: ADD(R4,R4,C2)
+b0000806 | 01a0: MOVE(R6,R8)
+7fffffe0 | 01a4: JUMP_D(-32)          [target address: 0124]
+00e20404 | 01a8: ADD(R4,R4,C2)
+7fffffde | 01ac: JUMP_D(-34)          [target address: 0124]
+7ffffff0 | 01b0: JUMP_D(-16)          [target address: 0170]
+00e20101 | 01b4: ADD(R1,R1,C2)
+b000e104 | 01b8: MOVE(R4,C1)
+7fffffda | 01bc: JUMP_D(-38)          [target address: 0124]
+68e90206 | 01c0: JNE(R6,R2,233)       [target address: 0564]
+b000e101 | 01c4: MOVE(R1,C1)
+30e10104 | 01c8: LSR(R4,R1,C1)
+c804e704 | 01cc: BALO(R4,C7,R4)
+58e3e101 | 01d0: JLE(R1,C1,227)       [target address: 055c]
+e0e00605 | 01d4: BGET(R5,R6,C0)
+e8e00405 | 01d8: BSET(R5,R4,C0)
+e0e10605 | 01dc: BGET(R5,R6,C1)
+b0000506 | 01e0: MOVE(R6,R5)
+b000e305 | 01e4: MOVE(R5,C3)
+58db0501 | 01e8: JLE(R1,R5,219)       [target address: 0554]
+e0e00607 | 01ec: BGET(R7,R6,C0)
+30e10508 | 01f0: LSR(R8,R5,C1)
+e8080407 | 01f4: BSET(R7,R4,R8)
+00e20505 | 01f8: ADD(R5,R5,C2)
+e0e10606 | 01fc: BGET(R6,R6,C1)
+58070501 | 0200: JLE(R1,R5,7)         [target address: 021c]
+e0e00607 | 0204: BGET(R7,R6,C0)
+30e10508 | 0208: LSR(R8,R5,C1)
+e8080407 | 020c: BSET(R7,R4,R8)
+00e20505 | 0210: ADD(R5,R5,C2)
+e0e10606 | 0214: BGET(R6,R6,C1)
+7ffffff4 | 0218: JUMP_D(-12)          [target address: 01e8]
+b0000401 | 021c: MOVE(R1,R4)
+c8e1e604 | 0220: BALO(R4,C6,C1)
+a1ffff05 | 0224: LDLO(R5,131071)
+38000500 | 0228: AND(R0,R5,R0)
+e8e00400 | 022c: BSET(R0,R4,C0)
+d0000100 | 0230: BSIZ(R0,R1)
+28e10000 | 0234: LSL(R0,R0,C1)
+40e10000 | 0238: OR(R0,R0,C1)
+b000e105 | 023c: MOVE(R5,C1)
+08e20006 | 0240: SUB(R6,R0,C2)
+58290506 | 0244: JLE(R6,R5,41)        [target address: 02e8]
+b8e0e004 | 0248: ARGS(R4,C0,C0)
+8801a806 | 024c: CALL_D(R6,424)       [target address: 08ec]
+b8e0e004 | 0250: ARGS(R4,C0,C0)
+8801a607 | 0254: CALL_D(R7,422)       [target address: 08ec]
+b8e0e004 | 0258: ARGS(R4,C0,C0)
+8801a408 | 025c: CALL_D(R8,420)       [target address: 08ec]
+b8e0e004 | 0260: ARGS(R4,C0,C0)
+8801a209 | 0264: CALL_D(R9,418)       [target address: 08ec]
+48e1060a | 0268: XOR(R10,R6,C1)
+28f80a0a | 026c: LSL(R10,R10,C24)
+40e10a0a | 0270: OR(R10,R10,C1)
+48e1070b | 0274: XOR(R11,R7,C1)
+28f00b0b | 0278: LSL(R11,R11,C16)
+40e10b0b | 027c: OR(R11,R11,C1)
+48e1080c | 0280: XOR(R12,R8,C1)
+28e80c0c | 0284: LSL(R12,R12,C8)
+40e10c0c | 0288: OR(R12,R12,C1)
+400b0a0a | 028c: OR(R10,R10,R11)
+40090c0b | 0290: OR(R11,R12,R9)
+400b0a0a | 0294: OR(R10,R10,R11)
+48e1050b | 0298: XOR(R11,R5,C1)
+080b000b | 029c: SUB(R11,R0,R11)
+48e10a0a | 02a0: XOR(R10,R10,C1)
+48e10b0b | 02a4: XOR(R11,R11,C1)
+200b0a0a | 02a8: MOD(R10,R10,R11)
+40e10a0a | 02ac: OR(R10,R10,C1)
+580d0ae1 | 02b0: JLE(C1,R10,13)       [target address: 02e4]
+48e10a0a | 02b4: XOR(R10,R10,C1)
+080ae10a | 02b8: SUB(R10,C1,R10)
+48e10a0b | 02bc: XOR(R11,R10,C1)
+000b050b | 02c0: ADD(R11,R5,R11)
+30e1050c | 02c4: LSR(R12,R5,C1)
+e00c010d | 02c8: BGET(R13,R1,R12)
+30e10b0b | 02cc: LSR(R11,R11,C1)
+e00b010e | 02d0: BGET(R14,R1,R11)
+e80c010e | 02d4: BSET(R14,R1,R12)
+e80b010d | 02d8: BSET(R13,R1,R11)
+00e20505 | 02dc: ADD(R5,R5,C2)
+7fffffd8 | 02e0: JUMP_D(-40)          [target address: 0240]
+7ffffff6 | 02e4: JUMP_D(-10)          [target address: 02bc]
+b8060102 | 02e8: ARGS(R2,R1,R6)
+8802b500 | 02ec: CALL_D(R0,693)       [target address: 0dc0]
+b000e101 | 02f0: MOVE(R1,C1)
+b000e104 | 02f4: MOVE(R4,C1)
+b0000305 | 02f8: MOVE(R5,R3)
+b0000206 | 02fc: MOVE(R6,R2)
+58140105 | 0300: JLE(R5,R1,20)        [target address: 0350]
+58100405 | 0304: JLE(R5,R4,16)        [target address: 0344]
+48e10107 | 0308: XOR(R7,R1,C1)
+30e10508 | 030c: LSR(R8,R5,C1)
+10080707 | 0310: MUL(R7,R7,R8)
+40e10707 | 0314: OR(R7,R7,C1)
+48e10408 | 0318: XOR(R8,R4,C1)
+00080707 | 031c: ADD(R7,R7,R8)
+c8e2e408 | 0320: BALO(R8,C4,C2)
+e8e00807 | 0324: BSET(R7,R8,C0)
+e8e10802 | 0328: BSET(R2,R8,C1)
+c8e2e407 | 032c: BALO(R7,C4,C2)
+e8e00708 | 0330: BSET(R8,R7,C0)
+e8e10706 | 0334: BSET(R6,R7,C1)
+00e20404 | 0338: ADD(R4,R4,C2)
+b0000706 | 033c: MOVE(R6,R7)
+7ffffff0 | 0340: JUMP_D(-16)          [target address: 0300]
+00e20101 | 0344: ADD(R1,R1,C2)
+b000e104 | 0348: MOVE(R4,C1)
+7fffffed | 034c: JUMP_D(-19)          [target address: 0300]
+b0000601 | 0350: MOVE(R1,R6)
+b0000204 | 0354: MOVE(R4,R2)
+682b0200 | 0358: JNE(R0,R2,43)        [target address: 0404]
+48e10300 | 035c: XOR(R0,R3,C1)
+10e20000 | 0360: MUL(R0,R0,C2)
+40e10000 | 0364: OR(R0,R0,C1)
+00e20000 | 0368: ADD(R0,R0,C2)
+a002c601 | 036c: LDLO(R1,710)
+5823e100 | 0370: JLE(R0,C1,35)        [target address: 03fc]
+b8e0e001 | 0374: ARGS(R1,C0,C0)
+8800d605 | 0378: CALL_D(R5,214)       [target address: 06d0]
+08e20005 | 037c: SUB(R5,R0,C2)
+b8e00105 | 0380: ARGS(R5,R1,C0)
+88018305 | 0384: CALL_D(R5,387)       [target address: 0990]
+a0005605 | 0388: LDLO(R5,86)
+b8e0e005 | 038c: ARGS(R5,C0,C0)
+8800d006 | 0390: CALL_D(R6,208)       [target address: 06d0]
+c8e4e106 | 0394: BALO(R6,C1,C4)
+a00b9c07 | 0398: LDLO(R7,2972)
+e8e00607 | 039c: BSET(R7,R6,C0)
+e8e10604 | 03a0: BSET(R4,R6,C1)
+e8e20602 | 03a4: BSET(R2,R6,C2)
+e8e30603 | 03a8: BSET(R3,R6,C3)
+5812e103 | 03ac: JLE(R3,C1,18)        [target address: 03f4]
+b8030204 | 03b0: ARGS(R4,R2,R3)
+b8e0e0e1 | 03b4: ARGS(C1,C0,C0)
+88020302 | 03b8: CALL_D(R2,515)       [target address: 0bc4]
+b80603e3 | 03bc: ARGS(C3,R3,R6)
+88018002 | 03c0: CALL_D(R2,384)       [target address: 09c0]
+5809e100 | 03c4: JLE(R0,C1,9)         [target address: 03e8]
+b8e0e001 | 03c8: ARGS(R1,C0,C0)
+8800c102 | 03cc: CALL_D(R2,193)       [target address: 06d0]
+08e20000 | 03d0: SUB(R0,R0,C2)
+b8e00100 | 03d4: ARGS(R0,R1,C0)
+88016e00 | 03d8: CALL_D(R0,366)       [target address: 0990]
+b8e0e005 | 03dc: ARGS(R5,C0,C0)
+8800bc00 | 03e0: CALL_D(R0,188)       [target address: 06d0]
+980000e0 | 03e4: HALT(C0)
+b8e0e005 | 03e8: ARGS(R5,C0,C0)
+8800b900 | 03ec: CALL_D(R0,185)       [target address: 06d0]
+7ffffffd | 03f0: JUMP_D(-3)           [target address: 03e4]
+b000e102 | 03f4: MOVE(R2,C1)
+7ffffff3 | 03f8: JUMP_D(-13)          [target address: 03c4]
+b000e205 | 03fc: MOVE(R5,C2)
+7fffffe2 | 0400: JUMP_D(-30)          [target address: 0388]
+e0e00005 | 0404: BGET(R5,R0,C0)
+a0ffff06 | 0408: LDLO(R6,65535)
+30ef0507 | 040c: LSR(R7,R5,C15)
+40e10707 | 0410: OR(R7,R7,C1)
+38060508 | 0414: AND(R8,R5,R6)
+b0000809 | 0418: MOVE(R9,R8)
+b0000708 | 041c: MOVE(R8,R7)
+b0000107 | 0420: MOVE(R7,R1)
+682d0207 | 0424: JNE(R7,R2,45)        [target address: 04d8]
+e0e10000 | 0428: BGET(R0,R0,C1)
+30ef0507 | 042c: LSR(R7,R5,C15)
+40e10707 | 0430: OR(R7,R7,C1)
+38060505 | 0434: AND(R5,R5,R6)
+c8e3e106 | 0438: BALO(R6,C1,C3)
+a00c9008 | 043c: LDLO(R8,3216)
+e8e00608 | 0440: BSET(R8,R6,C0)
+e8e10602 | 0444: BSET(R2,R6,C1)
+e8e20607 | 0448: BSET(R7,R6,C2)
+b8020602 | 044c: ARGS(R2,R6,R2)
+b8e0e001 | 0450: ARGS(R1,C0,C0)
+88011506 | 0454: CALL_D(R6,277)       [target address: 08a8]
+681d0206 | 0458: JNE(R6,R2,29)        [target address: 04cc]
+c8e3e108 | 045c: BALO(R8,C1,C3)
+a00cf809 | 0460: LDLO(R9,3320)
+e8e00809 | 0464: BSET(R9,R8,C0)
+e8e10802 | 0468: BSET(R2,R8,C1)
+e8e20805 | 046c: BSET(R5,R8,C2)
+b8020802 | 0470: ARGS(R2,R8,R2)
+b8e0e001 | 0474: ARGS(R1,C0,C0)
+88010c08 | 0478: CALL_D(R8,268)       [target address: 08a8]
+68110208 | 047c: JNE(R8,R2,17)        [target address: 04c0]
+b8080602 | 0480: ARGS(R2,R6,R8)
+88024209 | 0484: CALL_D(R9,578)       [target address: 0d8c]
+c8e4e10a | 0488: BALO(R10,C1,C4)
+a00d2c0b | 048c: LDLO(R11,3372)
+e8e00a0b | 0490: BSET(R11,R10,C0)
+e8e10a02 | 0494: BSET(R2,R10,C1)
+e8e20a07 | 0498: BSET(R7,R10,C2)
+e8e30a05 | 049c: BSET(R5,R10,C3)
+b8020a02 | 04a0: ARGS(R2,R10,R2)
+b8e0e001 | 04a4: ARGS(R1,C0,C0)
+88010001 | 04a8: CALL_D(R1,256)       [target address: 08a8]
+c8e2e405 | 04ac: BALO(R5,C4,C2)
+e8e00509 | 04b0: BSET(R9,R5,C0)
+e8e10501 | 04b4: BSET(R1,R5,C1)
+b0000501 | 04b8: MOVE(R1,R5)
+7fffffa7 | 04bc: JUMP_D(-89)          [target address: 0358]
+e0e00809 | 04c0: BGET(R9,R8,C0)
+b0000908 | 04c4: MOVE(R8,R9)
+7fffffee | 04c8: JUMP_D(-18)          [target address: 0480]
+e0e00608 | 04cc: BGET(R8,R6,C0)
+b0000806 | 04d0: MOVE(R6,R8)
+7fffffe2 | 04d4: JUMP_D(-30)          [target address: 045c]
+e0e0070a | 04d8: BGET(R10,R7,C0)
+6803020a | 04dc: JNE(R10,R2,3)        [target address: 04e8]
+e0e10707 | 04e0: BGET(R7,R7,C1)
+7fffffd0 | 04e4: JUMP_D(-48)          [target address: 0424]
+e0e00a0c | 04e8: BGET(R12,R10,C0)
+6814080c | 04ec: JNE(R12,R8,20)       [target address: 053c]
+6803020a | 04f0: JNE(R10,R2,3)        [target address: 04fc]
+e0e10707 | 04f4: BGET(R7,R7,C1)
+7fffffcb | 04f8: JUMP_D(-53)          [target address: 0424]
+e0e00a0b | 04fc: BGET(R11,R10,C0)
+6807090b | 0500: JNE(R11,R9,7)        [target address: 051c]
+e0e10000 | 0504: BGET(R0,R0,C1)
+c8e2e406 | 0508: BALO(R6,C4,C2)
+e8e00605 | 050c: BSET(R5,R6,C0)
+e8e10604 | 0510: BSET(R4,R6,C1)
+b0000604 | 0514: MOVE(R4,R6)
+7fffff90 | 0518: JUMP_D(-112)         [target address: 0358]
+e0e10a0a | 051c: BGET(R10,R10,C1)
+b8090a02 | 0520: ARGS(R2,R10,R9)
+8801e70a | 0524: CALL_D(R10,487)      [target address: 0cc0]
+6803ea0a | 0528: JNE(R10,C10,3)       [target address: 0534]
+e0e10707 | 052c: BGET(R7,R7,C1)
+7fffffbd | 0530: JUMP_D(-67)          [target address: 0424]
+67bdea0a | 0534: JEQ(R10,C10,-67)     [target address: 0428]
+7ffffff3 | 0538: JUMP_D(-13)          [target address: 0504]
+e0e10a0b | 053c: BGET(R11,R10,C1)
+b8080b02 | 0540: ARGS(R2,R11,R8)
+8801df0b | 0544: CALL_D(R11,479)      [target address: 0cc0]
+6feaea0b | 0548: JNE(R11,C10,-22)     [target address: 04f0]
+e0e10707 | 054c: BGET(R7,R7,C1)
+7fffffb5 | 0550: JUMP_D(-75)          [target address: 0424]
+b0000401 | 0554: MOVE(R1,R4)
+7fffff32 | 0558: JUMP_D(-206)         [target address: 0220]
+b0000401 | 055c: MOVE(R1,R4)
+7fffff30 | 0560: JUMP_D(-208)         [target address: 0220]
+e0e10601 | 0564: BGET(R1,R6,C1)
+b8e00102 | 0568: ARGS(R2,R1,C0)
+8800c301 | 056c: CALL_D(R1,195)       [target address: 0878]
+0001e201 | 0570: ADD(R1,C2,R1)
+7fffff15 | 0574: JUMP_D(-235)         [target address: 01c8]
+b000e204 | 0578: MOVE(R4,C2)
+7ffffee4 | 057c: JUMP_D(-284)         [target address: 010c]
+b000e203 | 0580: MOVE(R3,C2)
+7ffffec6 | 0584: JUMP_D(-314)         [target address: 009c]
+c0000005 | 0588: FRAME(5)
+f0000000 | 058c: BREA(R0)
+28e10000 | 0590: LSL(R0,R0,C1)
+40e10000 | 0594: OR(R0,R0,C1)
+a7ffff01 | 0598: LDLO(R1,-1)
+68020001 | 059c: JNE(R1,R0,2)         [target address: 05a4]
+900000ea | 05a0: RET(C10)
+a0010101 | 05a4: LDLO(R1,257)
+38000101 | 05a8: AND(R1,R1,R0)
+680401e1 | 05ac: JNE(C1,R1,4)         [target address: 05bc]
+28e20000 | 05b0: LSL(R0,R0,C2)
+48e20000 | 05b4: XOR(R0,R0,C2)
+90000000 | 05b8: RET(R0)
+a001c101 | 05bc: LDLO(R1,449)
+38000102 | 05c0: AND(R2,R1,R0)
+a0007f03 | 05c4: LDLO(R3,127)
+a0018104 | 05c8: LDLO(R4,385)
+680e0204 | 05cc: JNE(R4,R2,14)        [target address: 0604]
+f0000001 | 05d0: BREA(R1)
+28e10101 | 05d4: LSL(R1,R1,C1)
+40e10101 | 05d8: OR(R1,R1,C1)
+38030101 | 05dc: AND(R1,R1,R3)
+a0003f02 | 05e0: LDLO(R2,63)
+38000200 | 05e4: AND(R0,R2,R0)
+48e10000 | 05e8: XOR(R0,R0,C1)
+28e60000 | 05ec: LSL(R0,R0,C6)
+40e10000 | 05f0: OR(R0,R0,C1)
+40010000 | 05f4: OR(R0,R0,R1)
+28e20000 | 05f8: LSL(R0,R0,C2)
+48e20000 | 05fc: XOR(R0,R0,C2)
+90000000 | 0600: RET(R0)
+a001e102 | 0604: LDLO(R2,481)
+38000202 | 0608: AND(R2,R2,R0)
+68150201 | 060c: JNE(R1,R2,21)        [target address: 0660]
+f0000001 | 0610: BREA(R1)
+28e10101 | 0614: LSL(R1,R1,C1)
+40e10101 | 0618: OR(R1,R1,C1)
+38030101 | 061c: AND(R1,R1,R3)
+f0000002 | 0620: BREA(R2)
+28e10202 | 0624: LSL(R2,R2,C1)
+40e10202 | 0628: OR(R2,R2,C1)
+38030202 | 062c: AND(R2,R2,R3)
+3800ff00 | 0630: AND(R0,C31,R0)
+48e10000 | 0634: XOR(R0,R0,C1)
+28ec0000 | 0638: LSL(R0,R0,C12)
+40e10000 | 063c: OR(R0,R0,C1)
+48e10101 | 0640: XOR(R1,R1,C1)
+28e60101 | 0644: LSL(R1,R1,C6)
+40e10101 | 0648: OR(R1,R1,C1)
+40010000 | 064c: OR(R0,R0,R1)
+40020000 | 0650: OR(R0,R0,R2)
+28e20000 | 0654: LSL(R0,R0,C2)
+48e20000 | 0658: XOR(R0,R0,C2)
+90000000 | 065c: RET(R0)
+f0000001 | 0660: BREA(R1)
+28e10101 | 0664: LSL(R1,R1,C1)
+40e10101 | 0668: OR(R1,R1,C1)
+38030101 | 066c: AND(R1,R1,R3)
+f0000002 | 0670: BREA(R2)
+28e10202 | 0674: LSL(R2,R2,C1)
+40e10202 | 0678: OR(R2,R2,C1)
+38030202 | 067c: AND(R2,R2,R3)
+f0000004 | 0680: BREA(R4)
+28e10404 | 0684: LSL(R4,R4,C1)
+40e10404 | 0688: OR(R4,R4,C1)
+38030403 | 068c: AND(R3,R4,R3)
+3800ef00 | 0690: AND(R0,C15,R0)
+48e10000 | 0694: XOR(R0,R0,C1)
+28f20000 | 0698: LSL(R0,R0,C18)
+40e10000 | 069c: OR(R0,R0,C1)
+48e10101 | 06a0: XOR(R1,R1,C1)
+28ec0101 | 06a4: LSL(R1,R1,C12)
+40e10101 | 06a8: OR(R1,R1,C1)
+48e10202 | 06ac: XOR(R2,R2,C1)
+28e60202 | 06b0: LSL(R2,R2,C6)
+40e10202 | 06b4: OR(R2,R2,C1)
+40010000 | 06b8: OR(R0,R0,R1)
+40030201 | 06bc: OR(R1,R2,R3)
+40010000 | 06c0: OR(R0,R0,R1)
+28e20000 | 06c4: LSL(R0,R0,C2)
+48e20000 | 06c8: XOR(R0,R0,C2)
+90000000 | 06cc: RET(R0)
+c0000005 | 06d0: FRAME(5)
+30e20000 | 06d4: LSR(R0,R0,C2)
+a000ff01 | 06d8: LDLO(R1,255)
+50040001 | 06dc: JLT(R1,R0,4)         [target address: 06ec]
+30e10000 | 06e0: LSR(R0,R0,C1)
+f0000100 | 06e4: BWRI(R0)
+90000000 | 06e8: RET(R0)
+a0007f01 | 06ec: LDLO(R1,127)
+a0010102 | 06f0: LDLO(R2,257)
+a00fff03 | 06f4: LDLO(R3,4095)
+500c0003 | 06f8: JLT(R3,R0,12)        [target address: 0728]
+30e60003 | 06fc: LSR(R3,R0,C6)
+40e10303 | 0700: OR(R3,R3,C1)
+a0018104 | 0704: LDLO(R4,385)
+40030403 | 0708: OR(R3,R4,R3)
+30e10303 | 070c: LSR(R3,R3,C1)
+f0000103 | 0710: BWRI(R3)
+38010000 | 0714: AND(R0,R0,R1)
+40000200 | 0718: OR(R0,R2,R0)
+30e10000 | 071c: LSR(R0,R0,C1)
+f0000100 | 0720: BWRI(R0)
+90000000 | 0724: RET(R0)
+a1ffff03 | 0728: LDLO(R3,131071)
+50120003 | 072c: JLT(R3,R0,18)        [target address: 0774]
+30ec0003 | 0730: LSR(R3,R0,C12)
+40e10303 | 0734: OR(R3,R3,C1)
+a001c104 | 0738: LDLO(R4,449)
+40030403 | 073c: OR(R3,R4,R3)
+30e10303 | 0740: LSR(R3,R3,C1)
+f0000103 | 0744: BWRI(R3)
+30e60003 | 0748: LSR(R3,R0,C6)
+40e10303 | 074c: OR(R3,R3,C1)
+38010303 | 0750: AND(R3,R3,R1)
+40030203 | 0754: OR(R3,R2,R3)
+30e10303 | 0758: LSR(R3,R3,C1)
+f0000103 | 075c: BWRI(R3)
+38010000 | 0760: AND(R0,R0,R1)
+40000200 | 0764: OR(R0,R2,R0)
+30e10000 | 0768: LSR(R0,R0,C1)
+f0000100 | 076c: BWRI(R0)
+90000000 | 0770: RET(R0)
+30f20003 | 0774: LSR(R3,R0,C18)
+40e10303 | 0778: OR(R3,R3,C1)
+a001e104 | 077c: LDLO(R4,481)
+40030403 | 0780: OR(R3,R4,R3)
+30e10303 | 0784: LSR(R3,R3,C1)
+f0000103 | 0788: BWRI(R3)
+30ec0003 | 078c: LSR(R3,R0,C12)
+40e10303 | 0790: OR(R3,R3,C1)
+38010303 | 0794: AND(R3,R3,R1)
+40030203 | 0798: OR(R3,R2,R3)
+30e10303 | 079c: LSR(R3,R3,C1)
+f0000103 | 07a0: BWRI(R3)
+30e60003 | 07a4: LSR(R3,R0,C6)
+40e10303 | 07a8: OR(R3,R3,C1)
+38010303 | 07ac: AND(R3,R3,R1)
+40030203 | 07b0: OR(R3,R2,R3)
+30e10303 | 07b4: LSR(R3,R3,C1)
+f0000103 | 07b8: BWRI(R3)
+38010000 | 07bc: AND(R0,R0,R1)
+40000200 | 07c0: OR(R0,R2,R0)
+30e10000 | 07c4: LSR(R0,R0,C1)
+f0000100 | 07c8: BWRI(R0)
+90000000 | 07cc: RET(R0)
+c0000003 | 07d0: FRAME(3)
+48e10200 | 07d4: XOR(R0,R2,C1)
+00000100 | 07d8: ADD(R0,R1,R0)
+90000000 | 07dc: RET(R0)
+c0000003 | 07e0: FRAME(3)
+48e10200 | 07e4: XOR(R0,R2,C1)
+08000100 | 07e8: SUB(R0,R1,R0)
+90000000 | 07ec: RET(R0)
+c0000008 | 07f0: FRAME(8)
+b8e0e0e0 | 07f4: ARGS(C0,C0,C0)
+8fff6402 | 07f8: CALL_D(R2,-156)      [target address: 0588]
+a0006003 | 07fc: LDLO(R3,96)
+a0006104 | 0800: LDLO(R4,97)
+a0007305 | 0804: LDLO(R5,115)
+a0016e06 | 0808: LDLO(R6,366)
+68110602 | 080c: JNE(R2,R6,17)        [target address: 0850]
+b000e101 | 0810: MOVE(R1,C1)
+b8e0e0e0 | 0814: ARGS(C0,C0,C0)
+8fff5c02 | 0818: CALL_D(R2,-164)      [target address: 0588]
+30e20206 | 081c: LSR(R6,R2,C2)
+500b0406 | 0820: JLT(R6,R4,11)        [target address: 084c]
+50090605 | 0824: JLT(R5,R6,9)         [target address: 0848]
+48e10101 | 0828: XOR(R1,R1,C1)
+10ea0101 | 082c: MUL(R1,R1,C10)
+40e10101 | 0830: OR(R1,R1,C1)
+08030606 | 0834: SUB(R6,R6,R3)
+e0e00007 | 0838: BGET(R7,R0,C0)
+b8060100 | 083c: ARGS(R0,R1,R6)
+80000701 | 0840: CALL_I(R1,R7)
+7ffffff4 | 0844: JUMP_D(-12)          [target address: 0814]
+90000001 | 0848: RET(R1)
+90000001 | 084c: RET(R1)
+30e20200 | 0850: LSR(R0,R2,C2)
+50080400 | 0854: JLT(R0,R4,8)         [target address: 0874]
+50060005 | 0858: JLT(R5,R0,6)         [target address: 0870]
+08030000 | 085c: SUB(R0,R0,R3)
+b0000102 | 0860: MOVE(R2,R1)
+b0000001 | 0864: MOVE(R1,R0)
+b0000200 | 0868: MOVE(R0,R2)
+7fffffea | 086c: JUMP_D(-22)          [target address: 0814]
+900000e1 | 0870: RET(C1)
+900000e1 | 0874: RET(C1)
+c0000002 | 0878: FRAME(2)
+68020001 | 087c: JNE(R1,R0,2)         [target address: 0884]
+900000e1 | 0880: RET(C1)
+e0e10101 | 0884: BGET(R1,R1,C1)
+68020001 | 0888: JNE(R1,R0,2)         [target address: 0890]
+900000e3 | 088c: RET(C3)
+e0e10101 | 0890: BGET(R1,R1,C1)
+b8e00100 | 0894: ARGS(R0,R1,C0)
+8ffff800 | 0898: CALL_D(R0,-8)        [target address: 0878]
+0000e200 | 089c: ADD(R0,C2,R0)
+0000e200 | 08a0: ADD(R0,C2,R0)
+90000000 | 08a4: RET(R0)
+c0000005 | 08a8: FRAME(5)
+68020003 | 08ac: JNE(R3,R0,2)         [target address: 08b4]
+90000002 | 08b0: RET(R2)
+e0e00304 | 08b4: BGET(R4,R3,C0)
+e0e10303 | 08b8: BGET(R3,R3,C1)
+b8020100 | 08bc: ARGS(R0,R1,R2)
+b8e0e003 | 08c0: ARGS(R3,C0,C0)
+8ffff900 | 08c4: CALL_D(R0,-7)        [target address: 08a8]
+e0e00102 | 08c8: BGET(R2,R1,C0)
+b8e00401 | 08cc: ARGS(R1,R4,C0)
+80000201 | 08d0: CALL_I(R1,R2)
+6802ea01 | 08d4: JNE(R1,C10,2)        [target address: 08dc]
+90000000 | 08d8: RET(R0)
+c8e2e401 | 08dc: BALO(R1,C4,C2)
+e8e00104 | 08e0: BSET(R4,R1,C0)
+e8e10100 | 08e4: BSET(R0,R1,C1)
+90000001 | 08e8: RET(R1)
+c0000006 | 08ec: FRAME(6)
+e0e00001 | 08f0: BGET(R1,R0,C0)
+30e50102 | 08f4: LSR(R2,R1,C5)
+40e10202 | 08f8: OR(R2,R2,C1)
+48e10202 | 08fc: XOR(R2,R2,C1)
+48020102 | 0900: XOR(R2,R1,R2)
+30e50202 | 0904: LSR(R2,R2,C5)
+40e10202 | 0908: OR(R2,R2,C1)
+a001ff03 | 090c: LDLO(R3,511)
+38020302 | 0910: AND(R2,R3,R2)
+30ed0101 | 0914: LSR(R1,R1,C13)
+40e10101 | 0918: OR(R1,R1,C1)
+a0003f04 | 091c: LDLO(R4,63)
+50180401 | 0920: JLT(R1,R4,24)        [target address: 0980]
+b000e105 | 0924: MOVE(R5,C1)
+48e10101 | 0928: XOR(R1,R1,C1)
+0801f101 | 092c: SUB(R1,C17,R1)
+500f0401 | 0930: JLT(R1,R4,15)        [target address: 096c]
+b000e101 | 0934: MOVE(R1,C1)
+40010501 | 0938: OR(R1,R5,R1)
+38010301 | 093c: AND(R1,R3,R1)
+e0e00002 | 0940: BGET(R2,R0,C0)
+48e10202 | 0944: XOR(R2,R2,C1)
+a0321d03 | 0948: LDLO(R3,12829)
+10030202 | 094c: MUL(R2,R2,R3)
+40e10202 | 0950: OR(R2,R2,C1)
+a176ea03 | 0954: LDLO(R3,95978)
+00030202 | 0958: ADD(R2,R2,R3)
+a1ffff03 | 095c: LDLO(R3,131071)
+38020302 | 0960: AND(R2,R3,R2)
+e8e00002 | 0964: BSET(R2,R0,C0)
+90000001 | 0968: RET(R1)
+48e10202 | 096c: XOR(R2,R2,C1)
+30e10101 | 0970: LSR(R1,R1,C1)
+28010201 | 0974: LSL(R1,R2,R1)
+40e10101 | 0978: OR(R1,R1,C1)
+7fffffef | 097c: JUMP_D(-17)          [target address: 0938]
+30e10105 | 0980: LSR(R5,R1,C1)
+30050205 | 0984: LSR(R5,R2,R5)
+40e10505 | 0988: OR(R5,R5,C1)
+7fffffe7 | 098c: JUMP_D(-25)          [target address: 0928]
+c0000003 | 0990: FRAME(3)
+580ae100 | 0994: JLE(R0,C1,10)        [target address: 09bc]
+b8e0e001 | 0998: ARGS(R1,C0,C0)
+8fff4d02 | 099c: CALL_D(R2,-179)      [target address: 06d0]
+08e20000 | 09a0: SUB(R0,R0,C2)
+5805e100 | 09a4: JLE(R0,C1,5)         [target address: 09b8]
+b8e0e001 | 09a8: ARGS(R1,C0,C0)
+8fff4902 | 09ac: CALL_D(R2,-183)      [target address: 06d0]
+08e20000 | 09b0: SUB(R0,R0,C2)
+7ffffff7 | 09b4: JUMP_D(-9)           [target address: 0990]
+900000e2 | 09b8: RET(C2)
+900000e2 | 09bc: RET(C2)
+c0000004 | 09c0: FRAME(4)
+580c0001 | 09c4: JLE(R1,R0,12)        [target address: 09f4]
+e0e00203 | 09c8: BGET(R3,R2,C0)
+b8e00002 | 09cc: ARGS(R2,R0,C0)
+80000303 | 09d0: CALL_I(R3,R3)
+00e20000 | 09d4: ADD(R0,R0,C2)
+58060001 | 09d8: JLE(R1,R0,6)         [target address: 09f0]
+e0e00203 | 09dc: BGET(R3,R2,C0)
+b8e00002 | 09e0: ARGS(R2,R0,C0)
+80000303 | 09e4: CALL_I(R3,R3)
+00e20000 | 09e8: ADD(R0,R0,C2)
+7ffffff5 | 09ec: JUMP_D(-11)          [target address: 09c0]
+900000e1 | 09f0: RET(C1)
+900000e1 | 09f4: RET(C1)
+c0000006 | 09f8: FRAME(6)
+e0e10002 | 09fc: BGET(R2,R0,C1)
+e0e20003 | 0a00: BGET(R3,R0,C2)
+e0e30004 | 0a04: BGET(R4,R0,C3)
+e0e40000 | 0a08: BGET(R0,R0,C4)
+b0000205 | 0a0c: MOVE(R5,R2)
+b0000402 | 0a10: MOVE(R2,R4)
+b0000104 | 0a14: MOVE(R4,R1)
+b0000301 | 0a18: MOVE(R1,R3)
+b0000003 | 0a1c: MOVE(R3,R0)
+b0000500 | 0a20: MOVE(R0,R5)
+c0000007 | 0a24: FRAME(7)
+a0010605 | 0a28: LDLO(R5,262)
+b8e0e005 | 0a2c: ARGS(R5,C0,C0)
+8fff2806 | 0a30: CALL_D(R6,-216)      [target address: 06d0]
+08e20206 | 0a34: SUB(R6,R2,C2)
+581c0406 | 0a38: JLE(R6,R4,28)        [target address: 0aa8]
+48e10303 | 0a3c: XOR(R3,R3,C1)
+30e10202 | 0a40: LSR(R2,R2,C1)
+10020302 | 0a44: MUL(R2,R3,R2)
+40e10202 | 0a48: OR(R2,R2,C1)
+48e10403 | 0a4c: XOR(R3,R4,C1)
+00030202 | 0a50: ADD(R2,R2,R3)
+a002c603 | 0a54: LDLO(R3,710)
+00e20204 | 0a58: ADD(R4,R2,C2)
+48e10202 | 0a5c: XOR(R2,R2,C1)
+28ef0202 | 0a60: LSL(R2,R2,C15)
+40e10202 | 0a64: OR(R2,R2,C1)
+40040202 | 0a68: OR(R2,R2,R4)
+68030100 | 0a6c: JNE(R0,R1,3)         [target address: 0a78]
+b0000500 | 0a70: MOVE(R0,R5)
+7fffff17 | 0a74: JUMP_D(-233)         [target address: 06d0]
+e0e00004 | 0a78: BGET(R4,R0,C0)
+68030204 | 0a7c: JNE(R4,R2,3)         [target address: 0a88]
+b0000300 | 0a80: MOVE(R0,R3)
+7fffff13 | 0a84: JUMP_D(-237)         [target address: 06d0]
+e0e10000 | 0a88: BGET(R0,R0,C1)
+b8020001 | 0a8c: ARGS(R1,R0,R2)
+88008c00 | 0a90: CALL_D(R0,140)       [target address: 0cc0]
+6803ea00 | 0a94: JNE(R0,C10,3)        [target address: 0aa0]
+b0000500 | 0a98: MOVE(R0,R5)
+7fffff0d | 0a9c: JUMP_D(-243)         [target address: 06d0]
+b0000300 | 0aa0: MOVE(R0,R3)
+7fffff0b | 0aa4: JUMP_D(-245)         [target address: 06d0]
+900000e1 | 0aa8: RET(C1)
+c0000007 | 0aac: FRAME(7)
+e0e10002 | 0ab0: BGET(R2,R0,C1)
+e0e20003 | 0ab4: BGET(R3,R0,C2)
+e0e30004 | 0ab8: BGET(R4,R0,C3)
+e0e40005 | 0abc: BGET(R5,R0,C4)
+e0e50000 | 0ac0: BGET(R0,R0,C5)
+b0000206 | 0ac4: MOVE(R6,R2)
+b0000402 | 0ac8: MOVE(R2,R4)
+b0000004 | 0acc: MOVE(R4,R0)
+b0000600 | 0ad0: MOVE(R0,R6)
+b0000306 | 0ad4: MOVE(R6,R3)
+b0000503 | 0ad8: MOVE(R3,R5)
+b0000105 | 0adc: MOVE(R5,R1)
+b0000601 | 0ae0: MOVE(R1,R6)
+c0000008 | 0ae4: FRAME(8)
+48e10404 | 0ae8: XOR(R4,R4,C1)
+30e10306 | 0aec: LSR(R6,R3,C1)
+10060404 | 0af0: MUL(R4,R4,R6)
+40e10404 | 0af4: OR(R4,R4,C1)
+48e10506 | 0af8: XOR(R6,R5,C1)
+00060404 | 0afc: ADD(R4,R4,R6)
+a0010606 | 0b00: LDLO(R6,262)
+a002c607 | 0b04: LDLO(R7,710)
+48e10303 | 0b08: XOR(R3,R3,C1)
+00030403 | 0b0c: ADD(R3,R4,R3)
+48e10404 | 0b10: XOR(R4,R4,C1)
+28ef0404 | 0b14: LSL(R4,R4,C15)
+40e10404 | 0b18: OR(R4,R4,C1)
+40030403 | 0b1c: OR(R3,R4,R3)
+68070201 | 0b20: JNE(R1,R2,7)         [target address: 0b3c]
+b8e0e006 | 0b24: ARGS(R6,C0,C0)
+8ffeea01 | 0b28: CALL_D(R1,-278)      [target address: 06d0]
+58030500 | 0b2c: JLE(R0,R5,3)         [target address: 0b38]
+b0000700 | 0b30: MOVE(R0,R7)
+7ffffee7 | 0b34: JUMP_D(-281)         [target address: 06d0]
+900000e1 | 0b38: RET(C1)
+e0e00104 | 0b3c: BGET(R4,R1,C0)
+68070304 | 0b40: JNE(R4,R3,7)         [target address: 0b5c]
+b8e0e007 | 0b44: ARGS(R7,C0,C0)
+8ffee201 | 0b48: CALL_D(R1,-286)      [target address: 06d0]
+58030500 | 0b4c: JLE(R0,R5,3)         [target address: 0b58]
+b0000700 | 0b50: MOVE(R0,R7)
+7ffffedf | 0b54: JUMP_D(-289)         [target address: 06d0]
+900000e1 | 0b58: RET(C1)
+e0e10101 | 0b5c: BGET(R1,R1,C1)
+b8030102 | 0b60: ARGS(R2,R1,R3)
+88005701 | 0b64: CALL_D(R1,87)        [target address: 0cc0]
+6807ea01 | 0b68: JNE(R1,C10,7)        [target address: 0b84]
+b8e0e006 | 0b6c: ARGS(R6,C0,C0)
+8ffed801 | 0b70: CALL_D(R1,-296)      [target address: 06d0]
+58030500 | 0b74: JLE(R0,R5,3)         [target address: 0b80]
+b0000700 | 0b78: MOVE(R0,R7)
+7ffffed5 | 0b7c: JUMP_D(-299)         [target address: 06d0]
+900000e1 | 0b80: RET(C1)
+b8e0e007 | 0b84: ARGS(R7,C0,C0)
+8ffed201 | 0b88: CALL_D(R1,-302)      [target address: 06d0]
+58030500 | 0b8c: JLE(R0,R5,3)         [target address: 0b98]
+b0000700 | 0b90: MOVE(R0,R7)
+7ffffecf | 0b94: JUMP_D(-305)         [target address: 06d0]
+900000e1 | 0b98: RET(C1)
+c0000005 | 0b9c: FRAME(5)
+e0e10002 | 0ba0: BGET(R2,R0,C1)
+e0e20003 | 0ba4: BGET(R3,R0,C2)
+e0e30000 | 0ba8: BGET(R0,R0,C3)
+b0000204 | 0bac: MOVE(R4,R2)
+b0000002 | 0bb0: MOVE(R2,R0)
+b0000400 | 0bb4: MOVE(R0,R4)
+b0000304 | 0bb8: MOVE(R4,R3)
+b0000103 | 0bbc: MOVE(R3,R1)
+b0000401 | 0bc0: MOVE(R1,R4)
+c0000009 | 0bc4: FRAME(9)
+a002c604 | 0bc8: LDLO(R4,710)
+b8e0e004 | 0bcc: ARGS(R4,C0,C0)
+8ffec005 | 0bd0: CALL_D(R5,-320)      [target address: 06d0]
+c8e5e105 | 0bd4: BALO(R5,C1,C5)
+a009f806 | 0bd8: LDLO(R6,2552)
+e8e00506 | 0bdc: BSET(R6,R5,C0)
+e8e10500 | 0be0: BSET(R0,R5,C1)
+e8e20501 | 0be4: BSET(R1,R5,C2)
+e8e30502 | 0be8: BSET(R2,R5,C3)
+e8e40503 | 0bec: BSET(R3,R5,C4)
+5826e102 | 0bf0: JLE(R2,C1,38)        [target address: 0c88]
+b8020100 | 0bf4: ARGS(R0,R1,R2)
+b8e0e103 | 0bf8: ARGS(R3,C1,C0)
+8fff8a06 | 0bfc: CALL_D(R6,-118)      [target address: 0a24]
+b80502e3 | 0c00: ARGS(C3,R2,R5)
+8fff6f05 | 0c04: CALL_D(R5,-145)      [target address: 09c0]
+b8e0e004 | 0c08: ARGS(R4,C0,C0)
+8ffeb105 | 0c0c: CALL_D(R5,-335)      [target address: 06d0]
+a0005605 | 0c10: LDLO(R5,86)
+b8e0e005 | 0c14: ARGS(R5,C0,C0)
+8ffeae06 | 0c18: CALL_D(R6,-338)      [target address: 06d0]
+08e20206 | 0c1c: SUB(R6,R2,C2)
+58190306 | 0c20: JLE(R6,R3,25)        [target address: 0c84]
+b8e0e004 | 0c24: ARGS(R4,C0,C0)
+8ffeaa07 | 0c28: CALL_D(R7,-342)      [target address: 06d0]
+c8e6e107 | 0c2c: BALO(R7,C1,C6)
+a00aac08 | 0c30: LDLO(R8,2732)
+e8e00708 | 0c34: BSET(R8,R7,C0)
+e8e10706 | 0c38: BSET(R6,R7,C1)
+e8e20700 | 0c3c: BSET(R0,R7,C2)
+e8e30701 | 0c40: BSET(R1,R7,C3)
+e8e40702 | 0c44: BSET(R2,R7,C4)
+e8e50703 | 0c48: BSET(R3,R7,C5)
+580ae102 | 0c4c: JLE(R2,C1,10)        [target address: 0c74]
+b8010006 | 0c50: ARGS(R6,R0,R1)
+b8e10302 | 0c54: ARGS(R2,R3,C1)
+8fffa300 | 0c58: CALL_D(R0,-93)       [target address: 0ae4]
+b80702e3 | 0c5c: ARGS(C3,R2,R7)
+8fff5800 | 0c60: CALL_D(R0,-168)      [target address: 09c0]
+b8e0e004 | 0c64: ARGS(R4,C0,C0)
+8ffe9a00 | 0c68: CALL_D(R0,-358)      [target address: 06d0]
+b0000500 | 0c6c: MOVE(R0,R5)
+7ffffe98 | 0c70: JUMP_D(-360)         [target address: 06d0]
+b8e0e004 | 0c74: ARGS(R4,C0,C0)
+8ffe9600 | 0c78: CALL_D(R0,-362)      [target address: 06d0]
+b0000500 | 0c7c: MOVE(R0,R5)
+7ffffe94 | 0c80: JUMP_D(-364)         [target address: 06d0]
+900000e1 | 0c84: RET(C1)
+b000e105 | 0c88: MOVE(R5,C1)
+7fffffdf | 0c8c: JUMP_D(-33)          [target address: 0c08]
+c0000004 | 0c90: FRAME(4)
+e0e10002 | 0c94: BGET(R2,R0,C1)
+e0e20000 | 0c98: BGET(R0,R0,C2)
+68020201 | 0c9c: JNE(R1,R2,2)         [target address: 0ca4]
+900000ea | 0ca0: RET(C10)
+e0e00103 | 0ca4: BGET(R3,R1,C0)
+68020003 | 0ca8: JNE(R3,R0,2)         [target address: 0cb0]
+900000fa | 0cac: RET(C26)
+e0e10101 | 0cb0: BGET(R1,R1,C1)
+b0000203 | 0cb4: MOVE(R3,R2)
+b0000002 | 0cb8: MOVE(R2,R0)
+b0000300 | 0cbc: MOVE(R0,R3)
+c0000004 | 0cc0: FRAME(4)
+68020001 | 0cc4: JNE(R1,R0,2)         [target address: 0ccc]
+900000ea | 0cc8: RET(C10)
+e0e00103 | 0ccc: BGET(R3,R1,C0)
+68020203 | 0cd0: JNE(R3,R2,2)         [target address: 0cd8]
+900000fa | 0cd4: RET(C26)
+e0e10101 | 0cd8: BGET(R1,R1,C1)
+68020001 | 0cdc: JNE(R1,R0,2)         [target address: 0ce4]
+900000ea | 0ce0: RET(C10)
+e0e00103 | 0ce4: BGET(R3,R1,C0)
+68020203 | 0ce8: JNE(R3,R2,2)         [target address: 0cf0]
+900000fa | 0cec: RET(C26)
+e0e10101 | 0cf0: BGET(R1,R1,C1)
+7ffffff3 | 0cf4: JUMP_D(-13)          [target address: 0cc0]
+c0000004 | 0cf8: FRAME(4)
+e0e10002 | 0cfc: BGET(R2,R0,C1)
+e0e20000 | 0d00: BGET(R0,R0,C2)
+68020201 | 0d04: JNE(R1,R2,2)         [target address: 0d0c]
+900000ea | 0d08: RET(C10)
+e0e00103 | 0d0c: BGET(R3,R1,C0)
+68020003 | 0d10: JNE(R3,R0,2)         [target address: 0d18]
+900000fa | 0d14: RET(C26)
+e0e10101 | 0d18: BGET(R1,R1,C1)
+b0000203 | 0d1c: MOVE(R3,R2)
+b0000002 | 0d20: MOVE(R2,R0)
+b0000300 | 0d24: MOVE(R0,R3)
+7fffffe6 | 0d28: JUMP_D(-26)          [target address: 0cc0]
+c0000005 | 0d2c: FRAME(5)
+e0e10002 | 0d30: BGET(R2,R0,C1)
+e0e20003 | 0d34: BGET(R3,R0,C2)
+e0e30000 | 0d38: BGET(R0,R0,C3)
+680c0201 | 0d3c: JNE(R1,R2,12)        [target address: 0d6c]
+68020201 | 0d40: JNE(R1,R2,2)         [target address: 0d48]
+900000fa | 0d44: RET(C26)
+e0e00103 | 0d48: BGET(R3,R1,C0)
+68020003 | 0d4c: JNE(R3,R0,2)         [target address: 0d54]
+900000ea | 0d50: RET(C10)
+e0e10101 | 0d54: BGET(R1,R1,C1)
+b8000102 | 0d58: ARGS(R2,R1,R0)
+8fffd900 | 0d5c: CALL_D(R0,-39)       [target address: 0cc0]
+6802ea00 | 0d60: JNE(R0,C10,2)        [target address: 0d68]
+900000fa | 0d64: RET(C26)
+900000ea | 0d68: RET(C10)
+e0e00104 | 0d6c: BGET(R4,R1,C0)
+68020304 | 0d70: JNE(R4,R3,2)         [target address: 0d78]
+900000ea | 0d74: RET(C10)
+e0e10104 | 0d78: BGET(R4,R1,C1)
+b8030402 | 0d7c: ARGS(R2,R4,R3)
+8fffd003 | 0d80: CALL_D(R3,-48)       [target address: 0cc0]
+67efea03 | 0d84: JEQ(R3,C10,-17)      [target address: 0d40]
+900000ea | 0d88: RET(C10)
+c0000004 | 0d8c: FRAME(4)
+68020001 | 0d90: JNE(R1,R0,2)         [target address: 0d98]
+90000002 | 0d94: RET(R2)
+68020002 | 0d98: JNE(R2,R0,2)         [target address: 0da0]
+90000001 | 0d9c: RET(R1)
+e0e00103 | 0da0: BGET(R3,R1,C0)
+e0e10101 | 0da4: BGET(R1,R1,C1)
+b8020100 | 0da8: ARGS(R0,R1,R2)
+8ffff800 | 0dac: CALL_D(R0,-8)        [target address: 0d8c]
+c8e2e401 | 0db0: BALO(R1,C4,C2)
+e8e00103 | 0db4: BSET(R3,R1,C0)
+e8e10100 | 0db8: BSET(R0,R1,C1)
+90000001 | 0dbc: RET(R1)
+c0000004 | 0dc0: FRAME(4)
+a7ffff03 | 0dc4: LDLO(R3,-1)
+68020302 | 0dc8: JNE(R2,R3,2)         [target address: 0dd0]
+90000000 | 0dcc: RET(R0)
+30e10203 | 0dd0: LSR(R3,R2,C1)
+e0030103 | 0dd4: BGET(R3,R1,R3)
+08e20202 | 0dd8: SUB(R2,R2,C2)
+b8020100 | 0ddc: ARGS(R0,R1,R2)
+8ffff800 | 0de0: CALL_D(R0,-8)        [target address: 0dc0]
+c8e2e401 | 0de4: BALO(R1,C4,C2)
+e8e00103 | 0de8: BSET(R3,R1,C0)
+e8e10100 | 0dec: BSET(R0,R1,C1)
+90000001 | 0df0: RET(R1)

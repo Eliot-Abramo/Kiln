@@ -35,6 +35,9 @@ sealed trait CPSTreeModule {
 trait SymbolicNames extends CPSTreeModule {
   type Name = Symbol
 }
+trait AllocatedNames extends CPSTreeModule {
+  type Name = ASMRegister | Symbol
+}
 
 trait HighValues extends CPSTreeModule {
   type Literal = CL3Literal
@@ -74,3 +77,10 @@ object LowCPSTreeModule extends NestedTree with LowValues with SymbolicNames
  * at the root of the tree, defining all the functions of the program.
  */
 object FlatCPSTreeModule extends FlatTree with LowValues with SymbolicNames
+
+/**
+  * Module for register-allocated CPS trees: names either represent
+  * ASM registers or ASM labels. (Since register names are often
+  * reused, names are no longer globally unique as previously).
+  */
+object RegisterCPSTreeModule extends FlatTree with LowValues with AllocatedNames

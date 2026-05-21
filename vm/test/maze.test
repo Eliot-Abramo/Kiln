@@ -1,0 +1,76 @@
+<
+35
+1
+$ VM ./maze.l3a
+>
+Size: Seed: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X X   X   X X X         X   X         X           X     X X   X       X
+X X X XXX X X X XXX X XXX X X XXX XXXXX XXXXX X X X X XXX X XXX XXX X X
+X   X     X       X X   X X     X       X   X X X   X   X     X   X X X
+XXX X XXXXX XXX X XXXXX X XXXXXXXXX XXX XXX X XXX XXX XXX XXXXX XXX XXX
+X   X       X   X X   X   X           X     X   X X     X         X   X
+XXXXX XXX XXXXXXXXXXX XXXXXXXXX XXXXXXXXX X X XXXXX XXXXXXX X X XXXXX X
+X     X   X   X X X       X       X   X   X X X   X     X X X X X   X X
+XXX XXX XXXXX X X X XXXXX X X X XXXXX X X XXX XXX X X X X XXX XXX XXXXX
+X   X X X X     X X X     X X X X   X   X   X   X X X X X       X     X
+X XXX XXX X XXXXX X X XXX X XXX XXX XXX XXX X XXX XXXXXXX X XXXXX X XXX
+X       X       X   X   X     X   X X X X X X         X   X       X   X
+X XXX XXX XXXXX X X X XXX XXXXXXX X X X X XXXXX XXXXX XXXXXXXXX XXXXX X
+X X X X     X X X X X   X X X   X     X X X   X X X     X X X X X X   X
+XXX XXXXXXX X X XXXXX XXX X XXX X XXXXXXX X XXXXX X X X X X X X X XXXXX
+X     X X   X   X   X   X   X     X     X     X   X X X           X   X
+XXX XXX XXXXXXX X XXXXX X XXX XXXXXXX XXXXX X X XXX XXXXX XXXXXXXXX XXX
+X           X X     X X X X         X   X X X X     X X         X     X
+X XXX XXXXXXX XXX XXX XXXXXXX X X XXXXX X X XXXXXXXXX XXXXX X X XXX X X
+X   X X     X       X X X   X X X               X   X   X   X X     X X
+X X XXX XXXXX XXXXXXX X XXX XXX XXXXX X X XXX X X X X XXXXXXXXX X XXX X
+X X     X               X X X       X X X X   X X X         X   X   X X
+XXXXX XXXXXXXXXXXXXXXXX X X XXXXXXXXX XXXXXXXXX X X XXXXX X XXXXX XXX X
+X     X             X X       X X X   X   X   X X X   X X X   X     X X
+X X XXX XXXXX XXXXXXX X X XXXXX X XXX X XXXXX XXXXXXX X XXX XXXXXXXXXXX
+X X       X X       X   X   X X       X     X   X X X X   X         X X
+X XXXXXXXXX XXXXX X XXXXXXX X XXXXX XXX XXX XXX X X X XXX XXXXX XXX X X
+X   X       X X X X X       X   X X   X X       X X   X         X X   X
+XXX X XXXXXXX X X XXX XXX XXX X X X XXX X XXXXXXX XXX X XXX XXX X XXX X
+X X X             X   X     X X X   X   X   X     X X X   X X     X   X
+X X XXXXXXX XXXXX XXX X XXXXXXX X X XXXXXXX X X XXX X XXXXXXX XXXXX XXX
+X X X   X       X     X X         X       X   X X X     X X X   X   X X
+X X X X XXXXXXXXXXX XXX X X X XXXXXXXXXXX X XXX X X XXXXX X XXXXX XXX X
+X X   X         X X X     X X X       X   X   X X       X     X X     X
+X XXX XXXXXXX X X XXX X XXXXX XXXXXXX X XXXXXXX XXX XXX XXX X X XXX XXX
+X     X   X X X X     X X         X X X       X       X X   X X       X
+XXX X XXX X XXX XXX XXXXXXX X XXX X X X XXXXXXXXX XXXXX XXXXX XXXXXXXXX
+X   X X X X   X X   X       X X X   X                 X   X       X   X
+X XXX X X X XXXXX XXXXXXX X X X XXXXXXXXX XXX XXXXX XXX XXXXXXX XXXXX X
+X X   X   X     X X X   X X X       X X   X X   X     X X         X   X
+XXX X XXX X XXXXX X X X XXXXXXXXXXX X X XXX X X XXXXXXXXXXXXXXXXX X X X
+X X X       X X   X   X             X   X X X X       X X   X   X   X X
+X X XXX X X X X XXXXXXXXXXXXXXXXXXXXXXX X X XXX XXXXXXX X XXX XXXXX XXX
+X   X   X X X     X     X   X X X X     X       X                 X   X
+X XXXXX XXX XXX X X XXX XXX X X X X XXX XXXXXXXXXXXXX XXXXX XXX XXXXX X
+X X     X X X   X     X X   X         X X         X   X       X   X   X
+X XXX XXX XXXXX XXXXXXXXX XXXXX XXXXX XXXXX X XXXXX X X XXX XXX XXXXX X
+X X X     X   X         X   X X   X   X   X X X X X X X X   X         X
+XXX XXX XXXXX XXXXX X X XXX X XXXXX XXXXX X XXX X XXX XXX X X XXX X XXX
+X X     X X   X     X X X   X X X     X       X   X X   X X X   X X X X
+X XXXXX X X XXXXX XXXXX X XXX X XXXXX XXX XXXXXXX X XXXXX XXX XXXXX X X
+X   X X   X       X     X   X     X           X X   X     X       X   X
+XXX X XXXXXXX X XXX XXXXX X X XXX XXX XXXXXXX X X XXX XXX XXX XXXXXXX X
+X           X X X X   X   X   X X   X   X         X   X X X X X   X X X
+XXXXXXX XXXXX X X X X X XXX XXX XXX XXXXXXX X XXXXX X X XXX X X XXX XXX
+X     X   X   X X X X X X   X   X   X       X       X X   X     X   X X
+XXXXX X XXXXX XXX X X XXXXXXX XXX XXXXXXXXXXX XXX X XXX XXX XXX XXX X X
+X   X       X X     X     X   X   X X           X X X X X X   X X X   X
+X X XXXXX XXXXXXXXX XXXXX XXX X XXX XXXXXXX XXX XXXXX X X X X XXX XXX X
+X X   X   X     X X     X X   X             X       X       X X   X X X
+XXX XXX X XXX XXX XXX XXXXX XXX XXXXX XXX XXX XXX XXX X XXX XXX XXX X X
+X     X X         X   X       X     X   X   X X X X   X X X           X
+XXX XXXXX XXXXXXXXX X XXX XXXXXXXXXXXXXXX XXX X X XXXXX X XXX XXX X XXX
+X       X       X   X X X     X X X       X X X X   X     X     X X   X
+X XXXXX XXXXXXX XXX XXX X XXXXX X X XXXXXXX X X XXX XXXXX XXX XXX XXXXX
+X   X     X X X   X X X X     X       X   X   X X     X X X   X   X   X
+X XXX XXX X X X X X X X X XXX XXXXX X XXX XXX X XXXXXXX XXXXXXX X X XXX
+X X   X         X         X       X X       X     X         X   X X   X
+X XXX XXX XXX X X X X X X XXXXXXX X XXXXXXX XXX X XXXXX XXX XXXXX X X X
+X X   X     X X X X X X X   X     X       X   X X     X X           X X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
