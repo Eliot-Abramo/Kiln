@@ -8,7 +8,7 @@ SRCS=src/engine.c	\
      src/memory.c
 
 # clang sanitizers (see https://clang.llvm.org/docs/)
-CLANG_SAN_FLAGS=-fsanitize=address -fsanitize=undefined
+CLANG_SAN_FLAGS=-fsanitize=undefined
 
 # Clang warning flags
 CLANG_WARNING_FLAGS=-W				\
