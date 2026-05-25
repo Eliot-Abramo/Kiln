@@ -11,7 +11,11 @@
 #include "address.h"
 
 #define FREE_LIST_COUNT 32
-#define TOP_FRAME_TOTAL_WORDS (HEADER_SIZE + 2 + 256)
+
+// Register frames start with two saved context words:
+// slot 0 is the return PC and slot 1 is the caller frame pointer.
+#define REGISTER_FRAME_CONTEXT_SIZE 2
+#define TOP_FRAME_TOTAL_WORDS (HEADER_SIZE + REGISTER_FRAME_CONTEXT_SIZE + 256)
 
 struct memory {
   value* start;
@@ -20,6 +24,7 @@ struct memory {
   value* heap_end;
   value* bitmap;
   size_t bitmap_words;
+  size_t allocated_words_since_gc;
   value* free_lists[FREE_LIST_COUNT];
 };
 
@@ -95,6 +100,23 @@ static void insert_free_block(memory* self, value* block) {
   self->free_lists[index] = block;
 }
 
+static void append_free_block(memory* self, value* block, value** tails) {
+  value size = block_size(block);
+  if (size == 0)
+    return;
+
+  size_t index = free_list_index(size);
+  free_block_set_next(self, block, NULL);
+
+  // Sweep walks the heap from low to high addresses, so append keeps each
+  // size class in address order instead of reversing it through head inserts.
+  if (tails[index] == NULL)
+    self->free_lists[index] = block;
+  else
+    free_block_set_next(self, tails[index], block);
+  tails[index] = block;
+}
+
 static size_t bitmap_index(memory* self, value* header) {
   assert(header >= self->heap_start);
   assert(header < self->heap_end);
@@ -128,6 +150,7 @@ void memory_set_heap_start(memory* self, value* heap_start) {
 
   self->heap_end = self->heap_start + heap_words;
   self->bitmap = self->heap_end;
+  self->allocated_words_since_gc = 0;
 
   clear_free_lists(self);
   memset(self->bitmap, 0, self->bitmap_words * sizeof(value));
@@ -169,7 +192,10 @@ static value* mark_stack_pop(mark_stack* stack) {
   return stack->elements[--stack->size];
 }
 
-static value* unmarked_heap_block_at(memory* self, value maybe_pointer) {
+static value* unmarked_heap_block_at(memory* self,
+                                     value maybe_pointer,
+                                     bool allow_register_frame) {
+  // Tagged immediates cannot be block pointers; VM addresses are word-aligned.
   if ((maybe_pointer & (VALUE_BYTES - 1)) != 0)
     return NULL;
 
@@ -185,13 +211,24 @@ static value* unmarked_heap_block_at(memory* self, value maybe_pointer) {
   if (!bitmap_get(self, header))
     return NULL;
 
-  assert(block_tag(block) != tag_FreeBlock);
+  tag tag = block_tag(block);
+  assert(tag != tag_FreeBlock);
   assert(header + HEADER_SIZE + block_size(block) <= self->heap_end);
+
+  // Register frames are only valid through the explicit caller-frame chain.
+  // A random register value that happens to look like a frame address must not
+  // keep that frame alive.
+  if (tag == tag_RegisterFrame && !allow_register_frame)
+    return NULL;
+
   return block;
 }
 
-static void mark_value(memory* self, mark_stack* stack, value maybe_pointer) {
-  value* block = unmarked_heap_block_at(self, maybe_pointer);
+static void mark_value(memory* self,
+                       mark_stack* stack,
+                       value maybe_pointer,
+                       bool allow_register_frame) {
+  value* block = unmarked_heap_block_at(self, maybe_pointer, allow_register_frame);
   if (block == NULL)
     return;
 
@@ -200,9 +237,32 @@ static void mark_value(memory* self, mark_stack* stack, value maybe_pointer) {
 }
 
 static void mark_block_contents(memory* self, mark_stack* stack, value* block) {
+  tag tag = block_tag(block);
   value size = block_size(block);
-  for (value i = 0; i < size; ++i)
-    mark_value(self, stack, block[i]);
+
+  // Scan by block layout. Raw control words and code addresses can look like
+  // heap addresses, but they are not L3 heap pointers.
+  switch (tag) {
+  case tag_String:
+    return;
+
+  case tag_Function:
+    for (value i = 1; i < size; ++i)
+      mark_value(self, stack, block[i], false);
+    return;
+
+  case tag_RegisterFrame:
+    if (size > 1)
+      mark_value(self, stack, block[1], true);
+    for (value i = REGISTER_FRAME_CONTEXT_SIZE; i < size; ++i)
+      mark_value(self, stack, block[i], false);
+    return;
+
+  default:
+    for (value i = 0; i < size; ++i)
+      mark_value(self, stack, block[i], false);
+    return;
+  }
 }
 
 static value* other_top_frame(memory* self, value* root) {
@@ -240,7 +300,10 @@ static void memory_mark(memory* self, value* root) {
   mark_stack_destroy(&stack);
 }
 
-static void flush_free_run(memory* self, value* header, size_t words) {
+static void flush_free_run(memory* self,
+                           value* header,
+                           size_t words,
+                           value** tails) {
   if (words == 0)
     return;
 
@@ -250,11 +313,12 @@ static void flush_free_run(memory* self, value* header, size_t words) {
   value* block = header + HEADER_SIZE;
   block_set_tag_size(block, tag_FreeBlock, (value)(words - HEADER_SIZE));
   bitmap_clear(self, header);
-  insert_free_block(self, block);
+  append_free_block(self, block, tails);
 }
 
 static void memory_sweep(memory* self) {
   clear_free_lists(self);
+  value* tails[FREE_LIST_COUNT] = { 0 };
 
   value* free_run_header = NULL;
   size_t free_run_words = 0;
@@ -283,7 +347,7 @@ static void memory_sweep(memory* self) {
         free_run_header = header;
       free_run_words += words;
     } else {
-      flush_free_run(self, free_run_header, free_run_words);
+      flush_free_run(self, free_run_header, free_run_words, tails);
       free_run_header = NULL;
       free_run_words = 0;
     }
@@ -291,12 +355,13 @@ static void memory_sweep(memory* self) {
     header += words;
   }
 
-  flush_free_run(self, free_run_header, free_run_words);
+  flush_free_run(self, free_run_header, free_run_words, tails);
 }
 
 static void memory_collect(memory* self, value* root) {
   memory_mark(self, root);
   memory_sweep(self);
+  self->allocated_words_since_gc = 0;
 }
 
 static value* find_free_block(memory* self, value size) {
@@ -355,6 +420,10 @@ value* memory_allocate(memory* self,
   if (size > 0xFFFFFF)
     fail("invalid block size %u", size);
 
+  size_t heap_words = (size_t)(self->heap_end - self->heap_start);
+  if (self->allocated_words_since_gc > heap_words / 2)
+    memory_collect(self, root);
+
   value* block = find_free_block(self, size);
   if (block == NULL) {
     memory_collect(self, root);
@@ -364,7 +433,9 @@ value* memory_allocate(memory* self,
   if (block == NULL)
     fail("no memory left (block of size %u requested)", size);
 
-  return allocate_from_free_block(self, block, tag, size);
+  value* allocated = allocate_from_free_block(self, block, tag, size);
+  self->allocated_words_since_gc += (size_t)size + HEADER_SIZE;
+  return allocated;
 }
 
 value* memory_copy_of_block(memory* self, value* block, value* root) {

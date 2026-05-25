@@ -24,7 +24,7 @@ CFLAGS_DEBUG=${CFLAGS_COMMON} ${CLANG_SAN_FLAGS} -g
 # Flags for maximum performance:
 CFLAGS_RELEASE=${CFLAGS_COMMON} -O3 -DNDEBUG -fomit-frame-pointer
 
-CFLAGS=${CFLAGS_DEBUG}
+CFLAGS=${CFLAGS_RELEASE}
 
 all: vm
 
