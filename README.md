@@ -1,8 +1,16 @@
-# L₃ Compiler & Virtual Machine
+# KILN — Optimizing Compiler & Runtime
 
 <p align="center">
-  <strong>Developed by Eliot Abramo on top of EPFL's L₃ teaching infrastructure</strong>
+  <img src="docs/assets/kiln-logo.png" alt="KILN logo: an angular K in burnt orange and amber" width="240" />
 </p>
+
+<p align="center">
+  <strong>From functional source to a managed runtime.</strong>
+</p>
+
+<!-- <p align="center">
+  <strong>Developed by Eliot Abramo on top of EPFL's L₃ teaching infrastructure</strong>
+</p> -->
 
 <p align="center">
   <strong>Version:</strong> 2026
@@ -24,7 +32,7 @@
   <a href="#testing">Tests</a>
 </p>
 
-An optimizing compiler and garbage-collected runtime for a small functional language. L₃ takes Lisp-like source code through a series of explicit intermediate representations and emits assembly for a custom 32-bit register machine. Its C runtime executes the result and reclaims heap memory with a mark-and-sweep garbage collector. The repository includes the compiler, VM, standard library, and programs ranging from Hello, world to Sudoku and Unicode maze generation.
+KILN compiles L₃, a small functional language, to a custom 32-bit virtual machine. It combines compiler passes in Scala with a C runtime and mark-and-sweep garbage collection, with examples ranging from Hello, world to Sudoku and Unicode mazes.
 
 The core implementation work covers CPS translation, value representation and closure conversion, function hoisting, optimization, and garbage collection. [Project origins and attribution](#project-origins).
 
@@ -132,11 +140,9 @@ vm/test/           Assembly fixtures and a Python standard-library test runner
 library/           L₃ modules: lists, vectors, strings, integers, and more
 examples/          Runnable programs and module manifests
 tests/             Source fixtures and reference input/output
-docs/             Architecture and language guides
+docs/             Architecture, language guides, and project logo
 ```
 
 ## Project origins
 
-This is an educational compiler project based on EPFL's L₃ infrastructure. The supplied foundation includes the parser, name analysis, interpreters, register allocation and assembly infrastructure, VM execution engine, standard library, and test/example programs. Original author annotations, including those crediting **Michel Schinz**, are retained.
-
-Eliot Abramo's implementation work focuses on the compiler passes and memory manager linked above. The project demonstrates compiler construction and runtime engineering; its target is the L₃ VM instruction set.
+This is an educational compiler project based on EPFL's CS-420 Course and the material given in the course.
