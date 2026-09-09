@@ -1,0 +1,47 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compiler:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: sbt
+      - uses: sbt/setup-sbt@v1
+      - name: Test and package the compiler
+        working-directory: compiler
+        run: sbt test stage
+      - name: Compile and run Hello, world
+        run: |
+          make vm
+          compiler/target/universal/stage/bin/l3c examples/hello.l3
+          vm/c/bin/vm out.l3a > /tmp/l3-hello.actual
+          printf 'Hello, world!\n' > /tmp/l3-hello.expected
+          diff -u /tmp/l3-hello.expected /tmp/l3-hello.actual
+      - name: Compile and run an interactive example
+        run: |
+          compiler/target/universal/stage/bin/l3c examples/queens.l3m
+          vm/c/bin/vm out.l3a < tests/queens.in > /tmp/l3-queens.actual
+          diff -u tests/queens.out /tmp/l3-queens.actual
+
+  vm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test release build
+        run: make test-vm
+      - name: Test with address and undefined-behavior sanitizers
+        run: make test-debug

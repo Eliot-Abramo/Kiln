@@ -1,50 +1,57 @@
-# Introduction
+# L₃ compiler
 
-This directory contains the source code of the L₃ compiler, written in Scala. All interactions with the compiler should be done through [sbt](https://www.scala-sbt.org/), a Scala build tool.
+The Scala compiler translates `.l3` source files into assembly for the [C virtual machine](../vm/c/README.md). The main pipeline is defined in [Main.scala](src/l3/Main.scala); its passes are described in the [architecture guide](../docs/architecture.md).
 
-`Sbt` can either be run in interactive mode, by simply typing `sbt` and then entering commands at the prompt, or in batch mode. The following sections use batch mode for illustration, but in practice interactive mode is often to be preferred as it avoids repeated startup of `sbt` itself.
+## Build and test
 
-# Compiling
+Use JDK 21 and sbt. Run these commands from this directory:
 
-To compile the compiler, use the `compile` command:
-
-``` example
-$ sbt compile
+```sh
+sbt compile
+sbt test
+sbt stage
 ```
 
-(the dollar sign `$` represents the shell prompt and should not be typed).
+The build pins Scala 3.8.1 and sbt 1.12.2. `stage` creates a standalone launcher in `target/universal/stage/bin/l3c`. The tests execute sequentially because interpreter output capture uses process-wide input/output streams.
 
-# Testing
+## Compile a program
 
-To test the compiler (and compile it beforehand, if necessary), use the `test` command:
-
-``` example
-$ sbt test
+```sh
+sbt 'run ../examples/hello.l3'
 ```
 
-# Running
+This writes `out.l3a` in the current directory. Run it separately:
 
-To run the compiler (and compile it beforehand, if necessary), use the `run` command, followed by arguments for the compiler, e.g.:
-
-``` example
-$ sbt 'run ../examples/queens.l3m'
+```sh
+make -C ../vm/c
+../vm/c/bin/vm out.l3a
 ```
 
-The compiler accepts a list of files to compile as arguments. These files can have one of the following extensions:
+For repeated compilation, use the staged launcher:
 
-- `.l3` A normal source file, containing L₃ code.
-- `.l3m` A module file, containing a list of other files, which must also be either source files (with a `.l3` extension) or other module files (with a `.l3m` extension).
+```sh
+target/universal/stage/bin/l3c ../examples/queens.l3m
+../vm/c/bin/vm out.l3a
+```
 
-Modules are expanded recursively, until only `.l3` files remain. Then, duplicate file names are removed, with only the first occurrence kept. Finally, this list of files is fed to the compiler.
+Choose the output filename with a JVM property:
 
-As an example, assume that the file `lib.l3m` references `characters.l3m` and `integers.l3m`, and that `characters.l3m` references `characters.l3` while `integers.l3m` references both `characters.l3m` and `integers.l3`. Then, a command line consisting of `lib.l3m` and `helloworld.l3` is expanded as follows:
+```sh
+target/universal/stage/bin/l3c \
+  -Dl3.out-asm-file=queens.l3a ../examples/queens.l3m
+```
 
-1. `lib.l3m` `helloworld.l3` (original command line),
+Compilation does not run the program or consume its input. The output directory must already exist.
 
-2. `characters.l3m` `integers.l3m` `helloworld.l3` (expansion of `lib.l3m`),
+## Source files and modules
 
-3. `characters.l3` `characters.l3m` `integers.l3` `helloworld.l3` (expansion of `characters.l3m` and `integers.l3m`),
+The compiler accepts one or more filenames:
 
-4. `characters.l3` `characters.l3` `integers.l3` `helloworld.l3` (expansion of the second `characters.l3m`),
+- `.l3`: source code.
+- `.l3m`: a list of source files or other modules, resolved relative to the module file.
 
-5. `characters.l3` `integers.l3` `helloworld.l3` (removal of duplicates).
+Modules expand recursively. Duplicate source paths are removed, keeping their first occurrence, and the resulting sources are parsed together. For example, `../examples/queens.l3m` includes the standard library and the solver.
+
+## Inspecting intermediate representations
+
+`Main.scala` retains commented tree/sequence printers next to the relevant passes for local debugging. Reference interpreters are available for CL₃, high CPS, low CPS, flat CPS, and assembly. [L3Tester.scala](test/l3/L3Tester.scala) assembles the six backends used by the tests.

@@ -1,11 +1,3 @@
-/**
- * Time Obtained on My Machine:
- * Bignums: 1.37
- * Maze: 1.15
- * Queens: 1.22
- * Unimaze: 0.02
- * 
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>

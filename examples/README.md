@@ -1,45 +1,40 @@
-This directory contains several example programs written in L₃. The most important ones are briefly described in the table below.
+# L₃ examples
 
-| Name    | Behavior                                           |
-|---------|----------------------------------------------------|
-| bignums | Compute the factorial using "big integers"         |
-| life    | Conway's "Game of Life"                            |
-| maze    | Inefficiently compute and draw a random maze       |
-| unimaze | Like maze, but faster and using Unicode characters |
-| queens  | Solve the n-queens problem                         |
-| sudoku  | Solve a few Sudoku problems                        |
+Build both components with `make` from the repository root. The commands below also run from the root.
 
-Once the L₃ compiler is complete, that is once it can generate `l3a` files for the L₃ virtual machine, the examples above can be compiled in different ways, as described below.
+| Module | Behavior |
+| --- | --- |
+| `hello.l3` | Writes Hello, world using byte primitives; no library required. |
+| `bignums.l3m` | Computes factorials using big integers. |
+| `life.l3m` | Runs Conway's Game of Life. |
+| `maze.l3m` | Generates and draws a random maze. |
+| `unimaze.l3m` | Generates a maze with disjoint sets and Unicode rendering. |
+| `queens.l3m` | Solves the N-queens problem. |
+| `sudoku.l3m` | Solves a collection of Sudoku problems. |
+| `printint.l3m` | Demonstrates integer output. |
 
-The first, but slowest technique is to execute the compiler from sbt, using the `run` command. For example, to compile the `unimaze` example, enter the following command at the sbt prompt (the `>` below represents the sbt prompt and should not be typed):
+## Compile and run
 
-``` example
-> run ../examples/unimaze.l3m
+```sh
+compiler/target/universal/stage/bin/l3c examples/queens.l3m
+printf '8\n0\n' | vm/c/bin/vm out.l3a
 ```
 
-The second, faster technique consists in first packaging the L₃ compiler and then executing it from the shell. The packaging should be done from sbt using the `stage` command, as follows:
+A `.l3m` manifest includes both the source program and its library dependencies. Programs prompt for input when executed by the VM.
 
-``` example
-> stage
+Choose a separate output file to keep several examples compiled:
+
+```sh
+compiler/target/universal/stage/bin/l3c \
+  -Dl3.out-asm-file=examples/unimaze.l3a examples/unimaze.l3m
+vm/c/bin/vm -m 2000000 examples/unimaze.l3a
 ```
 
-This generates a launcher script called `l3c`, which can be executed from the shell. For example, to compile the `unimaze` example as above, enter the following command in your shell, while in the `examples` directory (the `$` below represents the shell prompt and should not be typed):
+For an initial experiment without packaging, run from `compiler/`:
 
-``` example
-$ ../compiler/target/universal/stage/bin/l3c unimaze.l3m
+```sh
+sbt 'run ../examples/hello.l3'
+../vm/c/bin/vm out.l3a
 ```
 
-Notice that both commands above will generate an L₃ assembly file called `out.l3a`. The name of that file can be changed using the `l3.out-asm-file` Java property. For example, to compile the same example as above but put the assembly file in `unimaze.l3a`, enter the following at the shell prompt:
-
-``` example
-$ ../compiler/target/universal/stage/bin/l3c \
-    -Dl3.out-asm-file=unimaze.l3a unimaze.l3m
-```
-
-To compile all the examples of this directory in parallel (to take advantage of a multi-core machine), a tool like [GNU parallel](https://savannah.gnu.org/projects/parallel/) can be used as follows:
-
-``` example
-$ ls *.l3m                                                     \
-    | parallel ../compiler/target/universal/stage/bin/l3c      \
-               -Dl3.out-asm-file={.}.l3a {}
-```
+The output filename defaults to `out.l3a` in the compiler's working directory. Generated files are ignored by Git.

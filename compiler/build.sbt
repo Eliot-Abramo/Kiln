@@ -37,6 +37,8 @@ lazy val root = (project in file("."))
 
     // Test configuration
     Test / scalaSource := baseDirectory.value / "test",
+    // The interpreter tests capture the process-wide System.in/System.out.
+    Test / parallelExecution := false,
     libraryDependencies += "com.lihaoyi" %% "utest" % "0.9.5" % "test",
     testFrameworks += new TestFramework("utest.runner.Framework"),
 

@@ -8,7 +8,7 @@ import l3.SymbolicCL3TreeModule.Tree
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val stats = new Statistics()
+    // val stats = new Statistics()
     val backEnd: Tree => TerminalPhaseResult = (
       // CL3Interpreter
       CL3ToCPSTranslator
@@ -22,7 +22,7 @@ object Main {
         `andThen` CPSHoister
         // `andThen` treePrinter("---------- After hoisting")
         `andThen` FlatCPSOptimizer
-        `andThen` (new FlatCPSInterpreter(stats.log))
+        // `andThen` (new FlatCPSInterpreter(stats.log))
         // `andThen` treePrinter("---------- After low optimization")
         // `andThen` FlatCPSInterpreter
         `andThen` CPSConstantNamer
@@ -46,7 +46,7 @@ object Main {
       .flatMap(backEnd) match {
         case Right((retCode, maybeMsg)) =>
           maybeMsg foreach println
-          println(stats)
+          // println(stats)
           sys.exit(retCode)
         case Left(errMsg) =>
           println(s"Error: $errMsg")

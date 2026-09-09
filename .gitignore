@@ -2,3 +2,17 @@
 .vscode/
 .bsp/
 target/
+
+# Local editor and operating-system files
+.idea/
+.DS_Store
+*~
+
+# Generated compiler output (keep the checked-in VM test fixtures)
+*.l3a
+!vm/test/*.l3a
+
+# C build output and Python caches
+/vm/c/bin/
+*.o
+__pycache__/
