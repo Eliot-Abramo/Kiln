@@ -1,5 +1,3 @@
-#define _DEFAULT_SOURCE
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -87,7 +85,7 @@ static inline int instr_d27(value instr) {
 #define INSTR_P(L, P, B)                                        \
   INSTR(L, {                                                    \
       value* next_pc = P;                                     \
-      void* next_label = labels[instr_opcode(*next_pc)];        \
+      void** next_label = labels[instr_opcode(*next_pc)];       \
       B;                                                        \
       pc = next_pc;                                             \
       goto *next_label;                                         \
@@ -148,7 +146,7 @@ value engine_run(engine* self) {
 
   // Interpret program
 
-  void* labels[] = {
+  void** labels[] = {
     [opcode_ADD]    = &&l_ADD,
     [opcode_SUB]    = &&l_SUB,
     [opcode_MUL]    = &&l_MUL,
